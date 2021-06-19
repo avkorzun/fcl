@@ -75,7 +75,7 @@ public:
 
   /// @brief Set the geometry data needed by the split rule
   void set(
-      Vector3<S>* vertices_, Triangle* tri_indices_, BVHModelType type_);
+      const Vector3<S>* vertices_, const Triangle* tri_indices_, BVHModelType type_);
 
   /// @brief Compute the split rule according to a subset of geometry and the
   /// corresponding BV node
@@ -103,10 +103,10 @@ private:
   S split_value;
 
   /// @brief The mesh vertices or points handled by the splitter
-  Vector3<S>* vertices;
+  const Vector3<S>* vertices;
 
   /// @brief The triangles handled by the splitter
-  Triangle* tri_indices;
+  const Triangle* tri_indices;
 
   /// @brief Whether the geometry is mesh or point cloud
   BVHModelType type;
@@ -150,8 +150,8 @@ void computeSplitValue_bvcenter(const BV& bv, S& split_value);
 template <typename S, typename BV>
 void computeSplitValue_mean(
     const BV& bv,
-    Vector3<S>* vertices,
-    Triangle* triangles,
+    const Vector3<S>* vertices,
+    const Triangle* triangles,
     unsigned int* primitive_indices,
     int num_primitives,
     BVHModelType type,
@@ -161,8 +161,8 @@ void computeSplitValue_mean(
 template <typename S, typename BV>
 void computeSplitValue_median(
     const BV& bv,
-    Vector3<S>* vertices,
-    Triangle* triangles,
+    const Vector3<S>* vertices,
+    const Triangle* triangles,
     unsigned int* primitive_indices,
     int num_primitives,
     BVHModelType type,

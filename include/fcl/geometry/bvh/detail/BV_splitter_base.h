@@ -61,8 +61,8 @@ public:
 
   /// @brief Set the geometry data needed by the split rule
   virtual void set(
-      Vector3<S>* vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_) = 0;
 
   /// @brief Compute the split rule according to a subset of geometry and the

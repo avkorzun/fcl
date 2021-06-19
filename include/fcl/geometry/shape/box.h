@@ -62,8 +62,7 @@ public:
   /// @brief Constructor
   Box();
 
-  /// @brief box side length
-  Vector3<S> side;
+  const Vector3<S> &getSide() const;
 
   /// @brief Compute AABB
   void computeLocalAABB() override;
@@ -83,9 +82,12 @@ public:
 
   friend
   std::ostream& operator<<(std::ostream& out, const Box& box) {
-    out << "Box" << box.side.transpose();
+    out << "Box" << box.getSide().transpose();
     return out;
   }
+private:
+  /// @brief box side length
+  Vector3<S> side;
 };
 
 using Boxf = Box<float>;

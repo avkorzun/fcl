@@ -923,8 +923,8 @@ bool collide_Test2(const Transform3<typename BV::S>& tf,
 
   BVHModel<BV> m1;
   BVHModel<BV> m2;
-  m1.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
-  m2.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
+  m1.setSplitMethod(split_method);
+  m2.setSplitMethod(split_method);
 
   std::vector<Vector3<S>> vertices1_new(vertices1.size());
   for(unsigned int i = 0; i < vertices1_new.size(); ++i)
@@ -992,8 +992,8 @@ bool collide_Test(const Transform3<typename BV::S>& tf,
 
   BVHModel<BV> m1;
   BVHModel<BV> m2;
-  m1.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
-  m2.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
+  m1.setSplitMethod(split_method);
+  m2.setSplitMethod(split_method);
 
   m1.beginModel();
   m1.addSubModel(vertices1, triangles1);
@@ -1053,8 +1053,8 @@ bool collide_Test_Oriented(const Transform3<typename BV::S>& tf,
 
   BVHModel<BV> m1;
   BVHModel<BV> m2;
-  m1.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
-  m2.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
+  m1.setSplitMethod(split_method);
+  m2.setSplitMethod(split_method);
 
   m1.beginModel();
   m1.addSubModel(vertices1, triangles1);
@@ -1113,8 +1113,8 @@ bool test_collide_func(const Transform3<typename BV::S>& tf,
 
   BVHModel<BV> m1;
   BVHModel<BV> m2;
-  m1.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
-  m2.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
+  m1.setSplitMethod(split_method);
+  m2.setSplitMethod(split_method);
 
   m1.beginModel();
   m1.addSubModel(vertices1, triangles1);

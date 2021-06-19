@@ -103,32 +103,32 @@ void ContinuousCollisionObject<S>::computeAABB()
   TVector3<S> T;
   motion->getTaylorModel(R, T);
 
-  Vector3<S> p = cgeom->aabb_local.min_;
+  Vector3<S> p = cgeom->getLocalAABB().min_;
   box = (R * p + T).getTightBound();
 
-  p[2] = cgeom->aabb_local.max_[2];
+  p[2] = cgeom->getLocalAABB().max_[2];
   box = bound(box, (R * p + T).getTightBound());
 
-  p[1] = cgeom->aabb_local.max_[1];
-  p[2] = cgeom->aabb_local.min_[2];
+  p[1] = cgeom->getLocalAABB().max_[1];
+  p[2] = cgeom->getLocalAABB().min_[2];
   box = bound(box, (R * p + T).getTightBound());
 
-  p[2] = cgeom->aabb_local.max_[2];
+  p[2] = cgeom->getLocalAABB().max_[2];
   box = bound(box, (R * p + T).getTightBound());
 
-  p[0] = cgeom->aabb_local.max_[0];
-  p[1] = cgeom->aabb_local.min_[1];
-  p[2] = cgeom->aabb_local.min_[2];
+  p[0] = cgeom->getLocalAABB().max_[0];
+  p[1] = cgeom->getLocalAABB().min_[1];
+  p[2] = cgeom->getLocalAABB().min_[2];
   box = bound(box, (R * p + T).getTightBound());
 
-  p[2] = cgeom->aabb_local.max_[2];
+  p[2] = cgeom->getLocalAABB().max_[2];
   box = bound(box, (R * p + T).getTightBound());
 
-  p[1] = cgeom->aabb_local.max_[1];
-  p[2] = cgeom->aabb_local.min_[2];
+  p[1] = cgeom->getLocalAABB().max_[1];
+  p[2] = cgeom->getLocalAABB().min_[2];
   box = bound(box, (R * p + T).getTightBound());
 
-  p[2] = cgeom->aabb_local.max_[2];
+  p[2] = cgeom->getLocalAABB().max_[2];
   box = bound(box, (R * p + T).getTightBound());
 
   aabb.min_ = box.getLow();

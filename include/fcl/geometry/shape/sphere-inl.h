@@ -51,6 +51,7 @@ class FCL_EXPORT Sphere<double>;
 template <typename S>
 Sphere<S>::Sphere(S radius) : ShapeBase<S>(), radius(radius)
 {
+  computeLocalAABB();
 }
 
 //==============================================================================
@@ -62,6 +63,13 @@ void Sphere<S>::computeLocalAABB()
 
   this->aabb_center = this->aabb_local.center();
   this->aabb_radius = radius;
+}
+
+//==============================================================================
+template <typename S>
+S Sphere<S>::getRadius() const
+{
+  return radius;
 }
 
 //==============================================================================

@@ -181,10 +181,10 @@ bool initialize(
 {
   using S = typename BV::S;
 
-  std::vector<Vector3<S>> vertices_transformed(model2.num_vertices);
-  for(int i = 0; i < model2.num_vertices; ++i)
+  std::vector<Vector3<S>> vertices_transformed(model2.getNumVertices());
+  for(int i = 0; i < model2.getNumVertices(); ++i)
   {
-    Vector3<S>& p = model2.vertices[i];
+    const Vector3<S>& p = model2.getVertices()[i];
     Vector3<S> new_v = tf2 * p;
     vertices_transformed[i] = new_v;
   }
@@ -196,8 +196,8 @@ bool initialize(
   node.model1 = &model1;
   node.model2 = &model2;
 
-  node.vertices = model2.vertices;
-  node.tri_indices = model2.tri_indices;
+  node.vertices = model2.getVertices();
+  node.tri_indices = model2.getTriIndices();
 
   node.tf1 = tf1;
   node.tf2 = tf2;

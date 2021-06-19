@@ -69,11 +69,11 @@ public:
   /// @brief Whether the traversal process can stop early
   bool canStop() const;
 
-  Vector3<S>* vertices1;
-  Vector3<S>* vertices2;
+  const Vector3<S>* vertices1;
+  const Vector3<S>* vertices2;
 
-  Triangle* tri_indices1;
-  Triangle* tri_indices2;
+  const Triangle* tri_indices1;
+  const Triangle* tri_indices2;
 
   S cost_density;
 };
@@ -249,10 +249,10 @@ void meshCollisionOrientedNodeLeafTesting(
     int b2,
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
-    Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices1,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     const Matrix3<typename BV::S>& R,
     const Vector3<typename BV::S>& T,
     const Transform3<typename BV::S>& tf1,
@@ -270,10 +270,10 @@ void meshCollisionOrientedNodeLeafTesting(
     int b2,
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
-    Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices1,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     const Transform3<typename BV::S>& tf,
     const Transform3<typename BV::S>& tf1,
     const Transform3<typename BV::S>& tf2,

@@ -66,7 +66,7 @@ BVSplitter<BV>::~BVSplitter()
 //==============================================================================
 template <typename BV>
 void BVSplitter<BV>::set(
-    Vector3<S>* vertices_, Triangle* tri_indices_, BVHModelType type_)
+    const Vector3<S>* vertices_, const Triangle* tri_indices_, BVHModelType type_)
 {
   vertices = vertices_;
   tri_indices = tri_indices_;
@@ -557,8 +557,8 @@ void computeSplitValue_bvcenter(const BV& bv, S& split_value)
 template <typename S, typename BV>
 void computeSplitValue_mean(
     const BV& bv,
-    Vector3<S>* vertices,
-    Triangle* triangles,
+    const Vector3<S>* vertices,
+    const Triangle* triangles,
     unsigned int* primitive_indices,
     int num_primitives,
     BVHModelType type,
@@ -602,8 +602,8 @@ void computeSplitValue_mean(
 template <typename S, typename BV>
 void computeSplitValue_median(
     const BV& bv,
-    Vector3<S>* vertices,
-    Triangle* triangles,
+    const Vector3<S>* vertices,
+    const Triangle* triangles,
     unsigned int* primitive_indices,
     int num_primitives,
     BVHModelType type,

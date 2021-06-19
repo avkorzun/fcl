@@ -55,12 +55,12 @@ public:
 
   /// @brief Constructor
   Cylinder(S radius, S lz);
-  
-  /// @brief Radius of the cylinder 
-  S radius;
+
+  /// @brief Radius of the cylinder  
+  S getRadius() const;
 
   /// @brief Length along z axis 
-  S lz;
+  S getLength() const;
 
   /// @brief Compute AABB 
   void computeLocalAABB() override;
@@ -80,9 +80,17 @@ public:
 
   friend
   std::ostream& operator<<(std::ostream& out, const Cylinder& cylinder) {
-    out << "Cylinder(r: " << cylinder.radius << ", lz: " << cylinder.lz << ")";
+    out << "Cylinder(r: " << cylinder.getRadius() << ", lz: " << cylinder.getLength() << ")";
     return out;
   }
+
+private:
+
+  /// @brief Radius of the cylinder 
+  S radius;
+
+  /// @brief Length along z axis 
+  S lz;
 };
 
 using Cylinderf = Cylinder<float>;

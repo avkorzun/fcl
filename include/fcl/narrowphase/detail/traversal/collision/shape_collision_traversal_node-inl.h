@@ -156,7 +156,7 @@ bool initialize(
   node.request = request;
   node.result = &result;
 
-  node.cost_density = shape1.cost_density * shape2.cost_density;
+  node.cost_density = shape1.getCostDensity() * shape2.getCostDensity();
 
   return true;
 }

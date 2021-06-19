@@ -79,46 +79,46 @@ Vector3<S> getSupport(
   case GEOM_TRIANGLE:
     {
       const auto* triangle = static_cast<const TriangleP<S>*>(shape);
-      S dota = dir.dot(triangle->a);
-      S dotb = dir.dot(triangle->b);
-      S dotc = dir.dot(triangle->c);
+      S dota = dir.dot(triangle->getA());
+      S dotb = dir.dot(triangle->getB());
+      S dotc = dir.dot(triangle->getC());
       if(dota > dotb)
       {
         if(dotc > dota)
-          return triangle->c;
+          return triangle->getC();
         else
-          return triangle->a;
+          return triangle->getA();
       }
       else
       {
         if(dotc > dotb)
-          return triangle->c;
+          return triangle->getC();
         else
-          return triangle->b;
+          return triangle->getB();
       }
     }
     break;
   case GEOM_BOX:
     {
       const Box<S>* box = static_cast<const Box<S>*>(shape);
-      return Vector3<S>((dir[0]>0)?(box->side[0]/2):(-box->side[0]/2),
-                   (dir[1]>0)?(box->side[1]/2):(-box->side[1]/2),
-                   (dir[2]>0)?(box->side[2]/2):(-box->side[2]/2));
+      return Vector3<S>((dir[0]>0)?(box->getSide()[0]/2):(-box->getSide()[0]/2),
+                   (dir[1]>0)?(box->getSide()[1]/2):(-box->getSide()[1]/2),
+                   (dir[2]>0)?(box->getSide()[2]/2):(-box->getSide()[2]/2));
     }
     break;
   case GEOM_SPHERE:
     {
       const Sphere<S>* sphere = static_cast<const Sphere<S>*>(shape);
-      return dir * sphere->radius;
+      return dir * sphere->getRadius();
     }
     break;
   case GEOM_ELLIPSOID:
     {
       const Ellipsoid<S>* ellipsoid = static_cast<const Ellipsoid<S>*>(shape);
 
-      const S a2 = ellipsoid->radii[0] * ellipsoid->radii[0];
-      const S b2 = ellipsoid->radii[1] * ellipsoid->radii[1];
-      const S c2 = ellipsoid->radii[2] * ellipsoid->radii[2];
+      const S a2 = ellipsoid->getRadii()[0] * ellipsoid->getRadii()[0];
+      const S b2 = ellipsoid->getRadii()[1] * ellipsoid->getRadii()[1];
+      const S c2 = ellipsoid->getRadii()[2] * ellipsoid->getRadii()[2];
 
       const Vector3<S> v(a2 * dir[0], b2 * dir[1], c2 * dir[2]);
       const S d = std::sqrt(v.dot(dir));
@@ -129,10 +129,10 @@ Vector3<S> getSupport(
   case GEOM_CAPSULE:
     {
       const Capsule<S>* capsule = static_cast<const Capsule<S>*>(shape);
-      S half_h = capsule->lz * 0.5;
+      S half_h = capsule->getLength() * 0.5;
       Vector3<S> pos1(0, 0, half_h);
       Vector3<S> pos2(0, 0, -half_h);
-      Vector3<S> v = dir * capsule->radius;
+      Vector3<S> v = dir * capsule->getRadius();
       pos1 += v;
       pos2 += v;
       if(dir.dot(pos1) > dir.dot(pos2))
@@ -147,8 +147,8 @@ Vector3<S> getSupport(
       S len = zdist + dir[2] * dir[2];
       zdist = std::sqrt(zdist);
       len = std::sqrt(len);
-      S half_h = cone->lz * 0.5;
-      S radius = cone->radius;
+      S half_h = cone->getLength() * 0.5;
+      S radius = cone->getRadius();
 
       S sin_a = radius / std::sqrt(radius * radius + 4 * half_h * half_h);
 
@@ -167,14 +167,14 @@ Vector3<S> getSupport(
     {
       const Cylinder<S>* cylinder = static_cast<const Cylinder<S>*>(shape);
       S zdist = std::sqrt(dir[0] * dir[0] + dir[1] * dir[1]);
-      S half_h = cylinder->lz * 0.5;
+      S half_h = cylinder->getLength() * 0.5;
       if(zdist == 0.0)
       {
         return Vector3<S>(0, 0, (dir[2]>0)? half_h:-half_h);
       }
       else
       {
-        S d = cylinder->radius / zdist;
+        S d = cylinder->getRadius() / zdist;
         return Vector3<S>(d * dir[0], d * dir[1], (dir[2]>0)?half_h:-half_h);
       }
     }

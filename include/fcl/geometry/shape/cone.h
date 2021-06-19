@@ -55,11 +55,11 @@ public:
 
   Cone(S radius, S lz);
 
-  /// @brief Radius of the cone 
-  S radius;
+  /// @brief Radius of the cone  
+  S getRadius() const;
 
   /// @brief Length along z axis 
-  S lz;
+  S getLength() const;
 
   /// @brief Compute AABB
   void computeLocalAABB() override;
@@ -82,9 +82,15 @@ public:
 
   friend
   std::ostream& operator<<(std::ostream& out, const Cone& cone) {
-    out << "Cone(r: " << cone.radius << ", lz: " << cone.lz << ")";
+    out << "Cone(r: " << cone.getRadius() << ", lz: " << cone.getLength() << ")";
     return out;
   }
+private:
+  /// @brief Radius of the cone 
+  S radius;
+
+  /// @brief Length along z axis 
+  S lz;
 };
 
 using Conef = Cone<float>;

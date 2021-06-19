@@ -59,10 +59,10 @@ public:
   using S = typename BV::S;
 
   /// @brief Set the primitives to be processed by the fitter
-  virtual void set(Vector3<S>* vertices_, Triangle* tri_indices_, BVHModelType type_) = 0;
+  virtual void set(const Vector3<S>* vertices_, const Triangle* tri_indices_, BVHModelType type_) = 0;
 
   /// @brief Set the primitives to be processed by the fitter, for deformable mesh.
-  virtual void set(Vector3<S>* vertices_, Vector3<S>* prev_vertices_, Triangle* tri_indices_, BVHModelType type_) = 0;
+  virtual void set(const Vector3<S>* vertices_, const Vector3<S>* prev_vertices_, const Triangle* tri_indices_, BVHModelType type_) = 0;
 
   /// @brief Compute the fitting BV
   virtual BV fit(unsigned int* primitive_indices, int num_primitives) = 0;

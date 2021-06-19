@@ -183,10 +183,10 @@ bool initialize(
 {
   using S = typename BV::S;
 
-  std::vector<Vector3<S>> vertices_transformed(model1.num_vertices);
-  for(int i = 0; i < model1.num_vertices; ++i)
+  std::vector<Vector3<S>> vertices_transformed(model1.getNumVertices());
+  for(int i = 0; i < model1.getNumVertices(); ++i)
   {
-    Vector3<S>& p = model1.vertices[i];
+    const Vector3<S>& p = model1.getVertices()[i];
     Vector3<S> new_v = tf1 * p;
     vertices_transformed[i] = new_v;
   }
@@ -198,8 +198,8 @@ bool initialize(
   node.model1 = &model1;
   node.model2 = &model2;
 
-  node.vertices = model1.vertices;
-  node.tri_indices = model1.tri_indices;
+  node.vertices = model1.getVertices();
+  node.tri_indices = model1.getTriIndices();
 
   node.tf1 = tf1;
   node.tf2 = tf2;
@@ -220,8 +220,8 @@ void meshShapeConservativeAdvancementOrientedNodeLeafTesting(
     const BVHModel<BV>* model1,
     const Shape& model2,
     const BV& model2_bv,
-    Vector3<typename BV::S>* vertices,
-    Triangle* tri_indices,
+    const Vector3<typename BV::S>* vertices,
+    const Triangle* tri_indices,
     const Transform3<typename BV::S>& tf1,
     const Transform3<typename BV::S>& tf2,
     const MotionBase<typename BV::S>* motion1,

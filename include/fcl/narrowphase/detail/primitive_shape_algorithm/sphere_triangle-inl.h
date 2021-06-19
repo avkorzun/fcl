@@ -142,7 +142,7 @@ bool sphereTriangleIntersect(const Sphere<S>& s, const Transform3<S>& tf,
   Vector3<S> normal = (P2 - P1).cross(P3 - P1);
   normal.normalize();
   const Vector3<S>& center = tf.translation();
-  const S& radius = s.radius;
+  const S& radius = s.getRadius();
   S radius_with_threshold = radius + std::numeric_limits<S>::epsilon();
   Vector3<S> p1_to_center = center - P1;
   S distance_from_plane = p1_to_center.dot(normal);
@@ -229,7 +229,7 @@ bool sphereTriangleDistance(const Sphere<S>& sp, const Transform3<S>& tf,
   // from geometric tools, very different from the collision code.
 
   const Vector3<S>& center = tf.translation();
-  S radius = sp.radius;
+  S radius = sp.getRadius();
   Vector3<S> diff = P1 - center;
   Vector3<S> edge0 = P2 - P1;
   Vector3<S> edge1 = P3 - P1;
@@ -474,13 +474,13 @@ bool sphereTriangleDistance(const Sphere<S>& sp, const Transform3<S>& tf,
     Vector3<S> o = tf.translation();
     typename Project<S>::ProjectResult result;
     result = Project<S>::projectTriangle(P1, P2, P3, o);
-    if(result.sqr_distance > sp.radius * sp.radius)
+    if(result.sqr_distance > sp.getRadius() * sp.getRadius())
     {
-      if(dist) *dist = std::sqrt(result.sqr_distance) - sp.radius;
+      if(dist) *dist = std::sqrt(result.sqr_distance) - sp.getRadius();
       Vector3<S> project_p = P1 * result.parameterization[0] + P2 * result.parameterization[1] + P3 * result.parameterization[2];
       Vector3<S> dir = o - project_p;
       dir.normalize();
-      if(p1) { *p1 = o - dir * sp.radius; *p1 = tf.inverse(Eigen::Isometry) * (*p1); }
+      if(p1) { *p1 = o - dir * sp.getRadius(); *p1 = tf.inverse(Eigen::Isometry) * (*p1); }
       if(p2) *p2 = project_p;
       return true;
     }

@@ -70,7 +70,7 @@ void BVHExpand(BVHModel<BV>& model, const Variance3<S>* ucs, S r)
       int v_id = bvnode.first_primitive + j;
       const Variance3<S>& uc = ucs[v_id];
 
-      Vector3<S>& v = model.vertices[bvnode.first_primitive + j];
+      const Vector3<S>& v = model.getVertices()[bvnode.first_primitive + j];
 
       for(int k = 0; k < 3; ++k)
       {
@@ -105,7 +105,7 @@ void BVHExpand(
       int v_id = bvnode.first_primitive + j;
       const Variance3<S>& uc = ucs[v_id];
 
-      Vector3<S>&v = model.vertices[bvnode.first_primitive + j];
+      const Vector3<S>&v = model.getVertices()[bvnode.first_primitive + j];
 
       for(int k = 0; k < 3; ++k)
       {
@@ -149,7 +149,7 @@ void BVHExpand(
       int v_id = bvnode.first_primitive + j;
       const Variance3<S>& uc = ucs[v_id];
 
-      Vector3<S>&v = model.vertices[bvnode.first_primitive + j];
+      const Vector3<S>&v = model.getVertices()[bvnode.first_primitive + j];
 
       for(int k = 0; k < 3; ++k)
       {

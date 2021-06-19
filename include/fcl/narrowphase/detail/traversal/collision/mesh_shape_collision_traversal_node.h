@@ -64,8 +64,8 @@ public:
   /// @brief Whether the traversal process can stop early
   bool canStop() const;
 
-  Vector3<S>* vertices;
-  Triangle* tri_indices;
+  const Vector3<S>* vertices;
+  const Triangle* tri_indices;
   
   S cost_density;
 
@@ -94,8 +94,8 @@ void meshShapeCollisionOrientedNodeLeafTesting(
     int b2,
     const BVHModel<BV>* model1,
     const Shape& model2,
-    Vector3<typename BV::S>* vertices,
-    Triangle* tri_indices,
+    const Vector3<typename BV::S>* vertices,
+    const Triangle* tri_indices,
     const Transform3<typename BV::S>& tf1,
     const Transform3<typename BV::S>& tf2,
     const NarrowPhaseSolver* nsolver,

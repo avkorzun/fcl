@@ -227,10 +227,10 @@ bool initialize(
 
   if(!tf1.matrix().isIdentity())
   {
-    std::vector<Vector3<S>> vertices_transformed1(model1.num_vertices);
-    for(int i = 0; i < model1.num_vertices; ++i)
+    std::vector<Vector3<S>> vertices_transformed1(model1.getNumVertices());
+    for(int i = 0; i < model1.getNumVertices(); ++i)
     {
-      Vector3<S>& p = model1.vertices[i];
+      const Vector3<S>& p = model1.getVertices()[i];
       Vector3<S> new_v = tf1 * p;
       vertices_transformed1[i] = new_v;
     }
@@ -244,10 +244,10 @@ bool initialize(
 
   if(!tf2.matrix().isIdentity())
   {
-    std::vector<Vector3<S>> vertices_transformed2(model2.num_vertices);
-    for(int i = 0; i < model2.num_vertices; ++i)
+    std::vector<Vector3<S>> vertices_transformed2(model2.getNumVertices());
+    for(int i = 0; i < model2.getNumVertices(); ++i)
     {
-      Vector3<S>& p = model2.vertices[i];
+      const Vector3<S>& p = model2.getVertices()[i];
       Vector3<S> new_v = tf2 * p;
       vertices_transformed2[i] = new_v;
     }
@@ -264,16 +264,16 @@ bool initialize(
   node.model2 = &model2;
   node.tf2 = tf2;
 
-  node.vertices1 = model1.vertices;
-  node.vertices2 = model2.vertices;
+  node.vertices1 = model1.getVertices();
+  node.vertices2 = model2.getVertices();
 
-  node.tri_indices1 = model1.tri_indices;
-  node.tri_indices2 = model2.tri_indices;
+  node.tri_indices1 = model1.getTriIndices();
+  node.tri_indices2 = model2.getTriIndices();
 
   node.request = request;
   node.result = &result;
 
-  node.cost_density = model1.cost_density * model2.cost_density;
+  node.cost_density = model1.getCostDensity() * model2.getCostDensity();
 
   return true;
 }
@@ -528,10 +528,10 @@ void meshCollisionOrientedNodeLeafTesting(
     int b1, int b2,
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
-    Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices1,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     const Matrix3<typename BV::S>& R,
     const Vector3<typename BV::S>& T,
     const Transform3<typename BV::S>& tf1,
@@ -626,10 +626,10 @@ void meshCollisionOrientedNodeLeafTesting(
     int b2,
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
-    Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices1,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     const Transform3<typename BV::S>& tf,
     const Transform3<typename BV::S>& tf1,
     const Transform3<typename BV::S>& tf2,
@@ -723,11 +723,11 @@ bool setupMeshCollisionOrientedNode(
   if(model1.getModelType() != BVH_MODEL_TRIANGLES || model2.getModelType() != BVH_MODEL_TRIANGLES)
     return false;
 
-  node.vertices1 = model1.vertices;
-  node.vertices2 = model2.vertices;
+  node.vertices1 = model1.getVertices();
+  node.vertices2 = model2.getVertices();
 
-  node.tri_indices1 = model1.tri_indices;
-  node.tri_indices2 = model2.tri_indices;
+  node.tri_indices1 = model1.getTriIndices();
+  node.tri_indices2 = model2.getTriIndices();
 
   node.model1 = &model1;
   node.tf1 = tf1;
@@ -737,7 +737,7 @@ bool setupMeshCollisionOrientedNode(
   node.request = request;
   node.result = &result;
 
-  node.cost_density = model1.cost_density * model2.cost_density;
+  node.cost_density = model1.getCostDensity() * model2.getCostDensity();
 
   relativeTransform(tf1.linear(), tf1.translation(), tf2.linear(), tf2.translation(), node.R, node.T);
 

@@ -51,12 +51,12 @@ template <typename S>
 class FCL_EXPORT CollisionObject
 {
 public:
-  CollisionObject(const std::shared_ptr<CollisionGeometry<S>>& cgeom);
+  CollisionObject(const std::shared_ptr<const CollisionGeometry<S>>& cgeom);
 
-  CollisionObject(const std::shared_ptr<CollisionGeometry<S>>& cgeom,
+  CollisionObject(const std::shared_ptr<const CollisionGeometry<S>>& cgeom,
                   const Transform3<S>& tf);
 
-  CollisionObject(const std::shared_ptr<CollisionGeometry<S>>& cgeom,
+  CollisionObject(const std::shared_ptr<const CollisionGeometry<S>>& cgeom,
                   const Matrix3<S>& R,
                   const Vector3<S>& T);
 
@@ -126,9 +126,6 @@ public:
   /// @brief get object's cost density
   S getCostDensity() const;
 
-  /// @brief set object's cost density
-  void setCostDensity(S c);
-
   /// @brief whether the object is completely occupied
   bool isOccupied() const;
 
@@ -140,7 +137,6 @@ public:
 
 protected:
 
-  std::shared_ptr<CollisionGeometry<S>> cgeom;
   std::shared_ptr<const CollisionGeometry<S>> cgeom_const;
 
   Transform3<S> t;

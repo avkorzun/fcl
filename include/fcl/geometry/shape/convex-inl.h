@@ -75,6 +75,7 @@ Convex<S>::Convex(
   interior_point_ = sum * (S)(1.0 / vertices_->size());
   FindVertexNeighbors();
   ValidateMesh(throw_if_invalid);
+  computeLocalAABB();
 }
 
 //==============================================================================

@@ -64,8 +64,8 @@ public:
   /// @brief Whether the traversal process can stop early
   bool canStop(S c) const;
 
-  Vector3<S>* vertices;
-  Triangle* tri_indices;
+  const Vector3<S>* vertices;
+  const Triangle* tri_indices;
 
   S rel_err;
   S abs_err;

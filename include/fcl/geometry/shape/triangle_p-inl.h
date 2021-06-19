@@ -55,7 +55,28 @@ TriangleP<S>::TriangleP(
     const Vector3<S>& c)
   : ShapeBase<S>(), a(a), b(b), c(c)
 {
-  // Do nothing
+  computeLocalAABB();
+}
+
+//==============================================================================
+template <typename S>
+const Vector3<S> &TriangleP<S>::getA() const
+{
+  return a;
+}
+
+//==============================================================================
+template <typename S>
+const Vector3<S> &TriangleP<S>::getB() const
+{
+  return b;
+}
+
+//==============================================================================
+template <typename S>
+const Vector3<S> &TriangleP<S>::getC() const
+{
+  return c;
 }
 
 //==============================================================================

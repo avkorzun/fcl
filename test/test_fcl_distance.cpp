@@ -396,8 +396,8 @@ void distance_Test_Oriented(const Transform3<typename BV::S>& tf,
 
   BVHModel<BV> m1;
   BVHModel<BV> m2;
-  m1.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
-  m2.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
+  m1.setSplitMethod(split_method);
+  m2.setSplitMethod(split_method);
 
 
   m1.beginModel();
@@ -448,8 +448,8 @@ void distance_Test(const Transform3<typename BV::S>& tf,
 
   BVHModel<BV> m1;
   BVHModel<BV> m2;
-  m1.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
-  m2.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
+  m1.setSplitMethod(split_method);
+  m2.setSplitMethod(split_method);
 
 
   m1.beginModel();
@@ -494,8 +494,8 @@ bool collide_Test_OBB(const Transform3<S>& tf,
 {
   BVHModel<OBB<S>> m1;
   BVHModel<OBB<S>> m2;
-  m1.bv_splitter.reset(new detail::BVSplitter<OBB<S>>(split_method));
-  m2.bv_splitter.reset(new detail::BVSplitter<OBB<S>>(split_method));
+  m1.setSplitMethod(split_method);
+  m2.setSplitMethod(split_method);
 
   m1.beginModel();
   m1.addSubModel(vertices1, triangles1);

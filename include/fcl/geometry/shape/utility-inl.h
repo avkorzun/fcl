@@ -141,9 +141,9 @@ struct FCL_EXPORT ComputeBVImpl<S, AABB<S>, Box<S>>
     const Matrix3<S>& R = tf.linear();
     const Vector3<S>& T = tf.translation();
 
-    S x_range = 0.5 * (fabs(R(0, 0) * s.side[0]) + fabs(R(0, 1) * s.side[1]) + fabs(R(0, 2) * s.side[2]));
-    S y_range = 0.5 * (fabs(R(1, 0) * s.side[0]) + fabs(R(1, 1) * s.side[1]) + fabs(R(1, 2) * s.side[2]));
-    S z_range = 0.5 * (fabs(R(2, 0) * s.side[0]) + fabs(R(2, 1) * s.side[1]) + fabs(R(2, 2) * s.side[2]));
+    S x_range = 0.5 * (fabs(R(0, 0) * s.getSide()[0]) + fabs(R(0, 1) * s.getSide()[1]) + fabs(R(0, 2) * s.getSide()[2]));
+    S y_range = 0.5 * (fabs(R(1, 0) * s.getSide()[0]) + fabs(R(1, 1) * s.getSide()[1]) + fabs(R(1, 2) * s.getSide()[2]));
+    S z_range = 0.5 * (fabs(R(2, 0) * s.getSide()[0]) + fabs(R(2, 1) * s.getSide()[1]) + fabs(R(2, 2) * s.getSide()[2]));
 
     Vector3<S> v_delta(x_range, y_range, z_range);
     bv.max_ = T + v_delta;
@@ -159,7 +159,7 @@ struct FCL_EXPORT ComputeBVImpl<S, OBB<S>, Box<S>>
   {
     bv.axis = tf.linear();
     bv.To = tf.translation();
-    bv.extent = s.side * (S)0.5;
+    bv.extent = s.getSide() * (S)0.5;
   }
 };
 
@@ -172,9 +172,9 @@ struct FCL_EXPORT ComputeBVImpl<S, AABB<S>, Capsule<S>>
     const Matrix3<S>& R = tf.linear();
     const Vector3<S>& T = tf.translation();
 
-    S x_range = 0.5 * fabs(R(0, 2) * s.lz) + s.radius;
-    S y_range = 0.5 * fabs(R(1, 2) * s.lz) + s.radius;
-    S z_range = 0.5 * fabs(R(2, 2) * s.lz) + s.radius;
+    S x_range = 0.5 * fabs(R(0, 2) * s.getLength()) + s.getRadius();
+    S y_range = 0.5 * fabs(R(1, 2) * s.getLength()) + s.getRadius();
+    S z_range = 0.5 * fabs(R(2, 2) * s.getLength()) + s.getRadius();
 
     Vector3<S> v_delta(x_range, y_range, z_range);
     bv.max_ = T + v_delta;
@@ -190,7 +190,7 @@ struct FCL_EXPORT ComputeBVImpl<S, OBB<S>, Capsule<S>>
   {
     bv.axis = tf.linear();
     bv.To = tf.translation();
-    bv.extent << s.radius, s.radius, s.lz / 2 + s.radius;
+    bv.extent << s.getRadius(), s.getRadius(), s.getLength() / 2 + s.getRadius();
   }
 };
 
@@ -203,9 +203,9 @@ struct FCL_EXPORT ComputeBVImpl<S, AABB<S>, Cone<S>>
     const Matrix3<S>& R = tf.linear();
     const Vector3<S>& T = tf.translation();
 
-    S x_range = fabs(R(0, 0) * s.radius) + fabs(R(0, 1) * s.radius) + 0.5 * fabs(R(0, 2) * s.lz);
-    S y_range = fabs(R(1, 0) * s.radius) + fabs(R(1, 1) * s.radius) + 0.5 * fabs(R(1, 2) * s.lz);
-    S z_range = fabs(R(2, 0) * s.radius) + fabs(R(2, 1) * s.radius) + 0.5 * fabs(R(2, 2) * s.lz);
+    S x_range = fabs(R(0, 0) * s.getRadius()) + fabs(R(0, 1) * s.getRadius()) + 0.5 * fabs(R(0, 2) * s.getLength());
+    S y_range = fabs(R(1, 0) * s.getRadius()) + fabs(R(1, 1) * s.getRadius()) + 0.5 * fabs(R(1, 2) * s.getLength());
+    S z_range = fabs(R(2, 0) * s.getRadius()) + fabs(R(2, 1) * s.getRadius()) + 0.5 * fabs(R(2, 2) * s.getLength());
 
     Vector3<S> v_delta(x_range, y_range, z_range);
     bv.max_ = T + v_delta;
@@ -221,7 +221,7 @@ struct FCL_EXPORT ComputeBVImpl<S, OBB<S>, Cone<S>>
   {
     bv.axis = tf.linear();
     bv.To = tf.translation();
-    bv.extent << s.radius, s.radius, s.lz / 2;
+    bv.extent << s.getRadius(), s.getRadius(), s.getLength() / 2;
   }
 };
 
@@ -267,9 +267,9 @@ struct FCL_EXPORT ComputeBVImpl<S, AABB<S>, Cylinder<S>>
     const Matrix3<S>& R = tf.linear();
     const Vector3<S>& T = tf.translation();
 
-    S x_range = fabs(R(0, 0) * s.radius) + fabs(R(0, 1) * s.radius) + 0.5 * fabs(R(0, 2) * s.lz);
-    S y_range = fabs(R(1, 0) * s.radius) + fabs(R(1, 1) * s.radius) + 0.5 * fabs(R(1, 2) * s.lz);
-    S z_range = fabs(R(2, 0) * s.radius) + fabs(R(2, 1) * s.radius) + 0.5 * fabs(R(2, 2) * s.lz);
+    S x_range = fabs(R(0, 0) * s.getRadius()) + fabs(R(0, 1) * s.getRadius()) + 0.5 * fabs(R(0, 2) * s.getLength());
+    S y_range = fabs(R(1, 0) * s.getRadius()) + fabs(R(1, 1) * s.getRadius()) + 0.5 * fabs(R(1, 2) * s.getLength());
+    S z_range = fabs(R(2, 0) * s.getRadius()) + fabs(R(2, 1) * s.getRadius()) + 0.5 * fabs(R(2, 2) * s.getLength());
 
     Vector3<S> v_delta(x_range, y_range, z_range);
     bv.max_ = T + v_delta;
@@ -285,7 +285,7 @@ struct FCL_EXPORT ComputeBVImpl<S, OBB<S>, Cylinder<S>>
   {
     bv.axis = tf.linear();
     bv.To = tf.translation();
-    bv.extent << s.radius, s.radius, s.lz / 2;
+    bv.extent << s.getRadius(), s.getRadius(), s.getLength() / 2;
   }
 };
 
@@ -298,9 +298,9 @@ struct FCL_EXPORT ComputeBVImpl<S, AABB<S>, Ellipsoid<S>>
     const Matrix3<S>& R = tf.linear();
     const Vector3<S>& T = tf.translation();
 
-    S x_range = (fabs(R(0, 0) * s.radii[0]) + fabs(R(0, 1) * s.radii[1]) + fabs(R(0, 2) * s.radii[2]));
-    S y_range = (fabs(R(1, 0) * s.radii[0]) + fabs(R(1, 1) * s.radii[1]) + fabs(R(1, 2) * s.radii[2]));
-    S z_range = (fabs(R(2, 0) * s.radii[0]) + fabs(R(2, 1) * s.radii[1]) + fabs(R(2, 2) * s.radii[2]));
+    S x_range = (fabs(R(0, 0) * s.getRadii()[0]) + fabs(R(0, 1) * s.getRadii()[1]) + fabs(R(0, 2) * s.getRadii()[2]));
+    S y_range = (fabs(R(1, 0) * s.getRadii()[0]) + fabs(R(1, 1) * s.getRadii()[1]) + fabs(R(1, 2) * s.getRadii()[2]));
+    S z_range = (fabs(R(2, 0) * s.getRadii()[0]) + fabs(R(2, 1) * s.getRadii()[1]) + fabs(R(2, 2) * s.getRadii()[2]));
 
     Vector3<S> v_delta(x_range, y_range, z_range);
     bv.max_ = T + v_delta;
@@ -316,7 +316,7 @@ struct FCL_EXPORT ComputeBVImpl<S, OBB<S>, Ellipsoid<S>>
   {
     bv.axis = tf.linear();
     bv.To = tf.translation();
-    bv.extent = s.radii;
+    bv.extent = s.getRadii();
   }
 };
 
@@ -327,8 +327,8 @@ struct FCL_EXPORT ComputeBVImpl<S, AABB<S>, Halfspace<S>>
   static void run(const Halfspace<S>& s, const Transform3<S>& tf, AABB<S>& bv)
   {
     Halfspace<S> new_s = transform(s, tf);
-    const Vector3<S>& n = new_s.n;
-    const S& d = new_s.d;
+    const Vector3<S>& n = new_s.getNormal();
+    const S& d = new_s.getOffset();
 
     AABB<S> bv_;
     bv_.min_ = Vector3<S>::Constant(-std::numeric_limits<S>::max());
@@ -419,8 +419,8 @@ struct FCL_EXPORT ComputeBVImpl<S, KDOP<S, 16>, Halfspace<S>>
   static void run(const Halfspace<S>& s, const Transform3<S>& tf, KDOP<S, 16>& bv)
   {
     Halfspace<S> new_s = transform(s, tf);
-    const Vector3<S>& n = new_s.n;
-    const S& d = new_s.d;
+    const Vector3<S>& n = new_s.getNormal();
+    const S& d = new_s.getOffset();
 
     const std::size_t D = 8;
     for(std::size_t i = 0; i < D; ++i)
@@ -478,8 +478,8 @@ struct FCL_EXPORT ComputeBVImpl<S, KDOP<S, 18>, Halfspace<S>>
   static void run(const Halfspace<S>& s, const Transform3<S>& tf, KDOP<S, 18>& bv)
   {
     Halfspace<S> new_s = transform(s, tf);
-    const Vector3<S>& n = new_s.n;
-    const S& d = new_s.d;
+    const Vector3<S>& n = new_s.getNormal();
+    const S& d = new_s.getOffset();
 
     const std::size_t D = 9;
 
@@ -543,8 +543,8 @@ struct FCL_EXPORT ComputeBVImpl<S, KDOP<S, 24>, Halfspace<S>>
   static void run(const Halfspace<S>& s, const Transform3<S>& tf, KDOP<S, 24>& bv)
   {
     Halfspace<S> new_s = transform(s, tf);
-    const Vector3<S>& n = new_s.n;
-    const S& d = new_s.d;
+    const Vector3<S>& n = new_s.getNormal();
+    const S& d = new_s.getOffset();
 
     const std::size_t D = 12;
 
@@ -623,8 +623,8 @@ struct FCL_EXPORT ComputeBVImpl<S, AABB<S>, Plane<S>>
   static void run(const Plane<S>& s, const Transform3<S>& tf, AABB<S>& bv)
   {
     Plane<S> new_s = transform(s, tf);
-    const Vector3<S>& n = new_s.n;
-    const S& d = new_s.d;
+    const Vector3<S>& n = new_s.getNormal();
+    const S& d = new_s.getOffset();
 
     AABB<S> bv_;
     bv_.min_ = Vector3<S>::Constant(-std::numeric_limits<S>::max());
@@ -658,12 +658,12 @@ struct FCL_EXPORT ComputeBVImpl<S, OBB<S>, Plane<S>>
 {
   static void run(const Plane<S>& s, const Transform3<S>& tf, OBB<S>& bv)
   {
-    const Vector3<S> n = tf.linear() * s.n;
+    const Vector3<S> n = tf.linear() * s.getNormal();
     bv.axis = generateCoordinateSystem(n);
 
     bv.extent << 0, std::numeric_limits<S>::max(), std::numeric_limits<S>::max();
 
-    Vector3<S> p = s.n * s.d;
+    Vector3<S> p = s.getNormal() * s.getOffset();
     bv.To = tf * p; /// n'd' = R * n * (d + (R * n) * T) = R * (n * d) + T
   }
 };
@@ -674,7 +674,7 @@ struct FCL_EXPORT ComputeBVImpl<S, RSS<S>, Plane<S>>
 {
   static void run(const Plane<S>& s, const Transform3<S>& tf, RSS<S>& bv)
   {
-    const Vector3<S> n = tf.linear() * s.n;
+    const Vector3<S> n = tf.linear() * s.getNormal();
     bv.axis = generateCoordinateSystem(n);
 
     bv.l[0] = std::numeric_limits<S>::max();
@@ -682,7 +682,7 @@ struct FCL_EXPORT ComputeBVImpl<S, RSS<S>, Plane<S>>
 
     bv.r = 0;
 
-    Vector3<S> p = s.n * s.d;
+    Vector3<S> p = s.getNormal() * s.getOffset();
     bv.To = tf * p;
   }
 };
@@ -718,8 +718,8 @@ struct FCL_EXPORT ComputeBVImpl<S, KDOP<S, 16>, Plane<S>>
   static void run(const Plane<S>& s, const Transform3<S>& tf, KDOP<S, 16>& bv)
   {
     Plane<S> new_s = transform(s, tf);
-    const Vector3<S>& n = new_s.n;
-    const S& d = new_s.d;
+    const Vector3<S>& n = new_s.getNormal();
+    const S& d = new_s.getOffset();
 
     const std::size_t D = 8;
 
@@ -773,8 +773,8 @@ struct FCL_EXPORT ComputeBVImpl<S, KDOP<S, 18>, Plane<S>>
   static void run(const Plane<S>& s, const Transform3<S>& tf, KDOP<S, 18>& bv)
   {
     Plane<S> new_s = transform(s, tf);
-    const Vector3<S>& n = new_s.n;
-    const S& d = new_s.d;
+    const Vector3<S>& n = new_s.getNormal();
+    const S& d = new_s.getOffset();
 
     const std::size_t D = 9;
 
@@ -832,8 +832,8 @@ struct FCL_EXPORT ComputeBVImpl<S, KDOP<S, 24>, Plane<S>>
   static void run(const Plane<S>& s, const Transform3<S>& tf, KDOP<S, 24>& bv)
   {
     Plane<S> new_s = transform(s, tf);
-    const Vector3<S>& n = new_s.n;
-    const S& d = new_s.d;
+    const Vector3<S>& n = new_s.getNormal();
+    const S& d = new_s.getOffset();
 
     const std::size_t D = 12;
 
@@ -902,7 +902,7 @@ struct FCL_EXPORT ComputeBVImpl<S, AABB<S>, Sphere<S>>
 {
   static void run(const Sphere<S>& s, const Transform3<S>& tf, AABB<S>& bv)
   {
-    const Vector3<S> v_delta = Vector3<S>::Constant(s.radius);
+    const Vector3<S> v_delta = Vector3<S>::Constant(s.getRadius());
     bv.max_ = tf.translation() + v_delta;
     bv.min_ = tf.translation() - v_delta;
   }
@@ -916,7 +916,7 @@ struct FCL_EXPORT ComputeBVImpl<S, OBB<S>, Sphere<S>>
   {
     bv.To = tf.translation();
     bv.axis.setIdentity();
-    bv.extent.setConstant(s.radius);
+    bv.extent.setConstant(s.getRadius());
   }
 };
 
@@ -926,7 +926,7 @@ struct FCL_EXPORT ComputeBVImpl<S, AABB<S>, TriangleP<S>>
 {
   static void run(const TriangleP<S>& s, const Transform3<S>& tf, AABB<S>& bv)
   {
-    bv = AABB<S>(tf * s.a, tf * s.b, tf * s.c);
+    bv = AABB<S>(tf * s.getA(), tf * s.getB(), tf * s.getC());
   }
 };
 

@@ -64,13 +64,13 @@ public:
 
   /// @brief Prepare the geometry primitive data for fitting
   void set(
-      Vector3<S>* vertices_, Triangle* tri_indices_, BVHModelType type_);
+      const Vector3<S>* vertices_, const Triangle* tri_indices_, BVHModelType type_);
 
   /// @brief Prepare the geometry primitive data for fitting, for deformable mesh
   void set(
-      Vector3<S>* vertices_,
-      Vector3<S>* prev_vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Vector3<S>* prev_vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_);
 
   /// @brief Compute a bounding volume that fits a set of primitives (points or triangles).
@@ -82,9 +82,9 @@ public:
 
 private:
 
-  Vector3<S>* vertices;
-  Vector3<S>* prev_vertices;
-  Triangle* tri_indices;
+  const Vector3<S>* vertices;
+  const Vector3<S>* prev_vertices;
+  const Triangle* tri_indices;
   BVHModelType type;
 
   template <typename, typename>

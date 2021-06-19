@@ -172,10 +172,10 @@ bool initialize(
 
   if(!tf1.matrix().isIdentity())
   {
-    std::vector<Vector3<S>> vertices_transformed1(model1.num_vertices);
-    for(int i = 0; i < model1.num_vertices; ++i)
+    std::vector<Vector3<S>> vertices_transformed1(model1.getNumVertices());
+    for(int i = 0; i < model1.getNumVertices(); ++i)
     {
-      Vector3<S>& p = model1.vertices[i];
+      const Vector3<S>& p = model1.getVertices()[i];
       Vector3<S> new_v = tf1 * p;
       vertices_transformed1[i] = new_v;
     }
@@ -189,10 +189,10 @@ bool initialize(
 
   if(!tf2.matrix().isIdentity())
   {
-    std::vector<Vector3<S>> vertices_transformed2(model2.num_vertices);
-    for(int i = 0; i < model2.num_vertices; ++i)
+    std::vector<Vector3<S>> vertices_transformed2(model2.getNumVertices());
+    for(int i = 0; i < model2.getNumVertices(); ++i)
     {
-      Vector3<S>& p = model2.vertices[i];
+      const Vector3<S>& p = model2.getVertices()[i];
       Vector3<S> new_v = tf2 * p;
       vertices_transformed2[i] = new_v;
     }
@@ -212,11 +212,11 @@ bool initialize(
   node.model2 = &model2;
   node.tf2 = tf2;
 
-  node.vertices1 = model1.vertices;
-  node.vertices2 = model2.vertices;
+  node.vertices1 = model1.getVertices();
+  node.vertices2 = model2.getVertices();
 
-  node.tri_indices1 = model1.tri_indices;
-  node.tri_indices2 = model2.tri_indices;
+  node.tri_indices1 = model1.getTriIndices();
+  node.tri_indices2 = model2.getTriIndices();
 
   return true;
 }
@@ -403,10 +403,10 @@ void meshDistanceOrientedNodeLeafTesting(int b1,
     int b2,
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
-    Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices1,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     const Matrix3<typename BV::S>& R,
     const Vector3<typename BV::S>& T,
     bool enable_statistics,
@@ -455,10 +455,10 @@ void meshDistanceOrientedNodeLeafTesting(
     int b2,
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
-    Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices1,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     const Transform3<typename BV::S>& tf,
     bool enable_statistics,
     int& num_leaf_tests,
@@ -504,9 +504,9 @@ void distancePreprocessOrientedNode(
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
     const Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     int init_tri_id1,
     int init_tri_id2,
     const Matrix3<typename BV::S>& R,
@@ -547,9 +547,9 @@ void distancePreprocessOrientedNode(
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
     const Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     int init_tri_id1,
     int init_tri_id2,
     const Transform3<typename BV::S>& tf,
@@ -621,11 +621,11 @@ static bool setupMeshDistanceOrientedNode(
   node.model2 = &model2;
   node.tf2 = tf2;
 
-  node.vertices1 = model1.vertices;
-  node.vertices2 = model2.vertices;
+  node.vertices1 = model1.getVertices();
+  node.vertices2 = model2.getVertices();
 
-  node.tri_indices1 = model1.tri_indices;
-  node.tri_indices2 = model2.tri_indices;
+  node.tri_indices1 = model1.getTriIndices();
+  node.tri_indices2 = model2.getTriIndices();
 
   node.tf = tf1.inverse(Eigen::Isometry) * tf2;
 

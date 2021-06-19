@@ -99,7 +99,7 @@ FCL_EXPORT bool sphereBoxIntersect(const Sphere<S>& sphere,
                                    const Transform3<S>& X_FS, const Box<S>& box,
                                    const Transform3<S>& X_FB,
                                    std::vector<ContactPoint<S>>* contacts) {
-  const S r = sphere.radius;
+  const S r = sphere.getRadius();
   // Find the sphere center C in the box's frame.
   const Transform3<S> X_BS = X_FB.inverse() * X_FS;
   const Vector3<S> p_BC = X_BS.translation();
@@ -107,7 +107,7 @@ FCL_EXPORT bool sphereBoxIntersect(const Sphere<S>& sphere,
   // Find N, the nearest point *inside* the box to the sphere center C (measured
   // and expressed in frame B)
   Vector3<S> p_BN;
-  bool N_is_not_C = nearestPointInBox(box.side, p_BC, &p_BN);
+  bool N_is_not_C = nearestPointInBox(box.getSide(), p_BC, &p_BN);
 
   // Compute the position vector from the nearest point N to the sphere center
   // C in the common box frame B. If the center is inside the box, this will be
@@ -150,7 +150,7 @@ FCL_EXPORT bool sphereBoxIntersect(const Sphere<S>& sphere,
       // depth is the distance to that face + radius. The position is the point
       // midway between the projection point, and the point opposite the sphere
       // center in the *negative* normal direction.
-      Vector3<S> half_size = box.side / 2;
+      Vector3<S> half_size = box.getSide() / 2;
       S min_distance =
           std::numeric_limits<typename constants<S>::Real>::infinity();
       int min_axis = -1;
@@ -187,12 +187,12 @@ FCL_EXPORT bool sphereBoxDistance(const Sphere<S>& sphere,
   // Find the sphere center C in the box's frame.
   const Transform3<S> X_BS = X_FB.inverse() * X_FS;
   const Vector3<S> p_BC = X_BS.translation();
-  const S r = sphere.radius;
+  const S r = sphere.getRadius();
 
   // Find N, the nearest point *inside* the box to the sphere center C (measured
   // and expressed in frame B)
   Vector3<S> p_BN;
-  bool N_is_not_C = nearestPointInBox(box.side, p_BC, &p_BN);
+  bool N_is_not_C = nearestPointInBox(box.getSide(), p_BC, &p_BN);
 
   if (N_is_not_C) {
     // If N is not C, we know the sphere center is *outside* the box (but we

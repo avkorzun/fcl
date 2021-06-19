@@ -862,8 +862,8 @@ bool boxBoxIntersect(const Box<S>& s1, const Transform3<S>& tf1,
   int return_code;
   Vector3<S> normal;
   S depth;
-  /* int cnum = */ boxBox2(s1.side, tf1,
-                           s2.side, tf2,
+  /* int cnum = */ boxBox2(s1.getSide(), tf1,
+                           s2.getSide(), tf2,
                            normal, &depth, &return_code,
                            4, contacts);
 

@@ -177,7 +177,7 @@ bool capsuleCapsuleDistance(const Capsule<S>& s1, const Transform3<S>& X_FC1,
   // canonical frame's origin to the z+ point: p_CoZ+_F in frame F.
   auto calc_half_arm = [](const Capsule<S>& c,
                           const Transform3<S>& X_FC) -> Vector3<S> {
-    const S half_length = c.lz / 2;
+    const S half_length = c.getLength() / 2;
     const Vector3<S> Cz_F = z_axis(X_FC);
     return half_length * Cz_F;
   };
@@ -190,8 +190,8 @@ bool capsuleCapsuleDistance(const Capsule<S>& s1, const Transform3<S>& X_FC1,
   const Vector3<S> p_FC2a = p_FC2o + half_arm_2_F;
   const Vector3<S> p_FC2b = p_FC2o - half_arm_2_F;
 
-  // s and t correspond to the length of each line segment; should be s1.lz and
-  // s2.lz, respectively.
+  // s and t correspond to the length of each line segment; should be s1.getLength() and
+  // s2.getLength(), respectively.
   S s, t;
   // The points on the line segments closest to each other.
   Vector3<S> p_FN1, p_FN2;
@@ -205,7 +205,7 @@ bool capsuleCapsuleDistance(const Capsule<S>& s1, const Transform3<S>& X_FC1,
                                                  &s, &t, &p_FN1, &p_FN2);
 
   const S segment_dist = sqrt(squared_dist);
-  *dist = segment_dist - s1.radius - s2.radius;
+  *dist = segment_dist - s1.getRadius() - s2.getRadius();
   Vector3<S> vhat_C1C2_F;
   const auto eps = constants<S>::eps_78();
   // We can only use the vector between the center-line nearest points to find
@@ -232,8 +232,8 @@ bool capsuleCapsuleDistance(const Capsule<S>& s1, const Transform3<S>& X_FC1,
       vhat_C1C2_F = X_FC1.matrix().template block<3, 1>(0, 0);
     }
   }
-  *p_FW1 = p_FN1 + vhat_C1C2_F * s1.radius;
-  *p_FW2 = p_FN2 - vhat_C1C2_F * s2.radius;
+  *p_FW1 = p_FN1 + vhat_C1C2_F * s1.getRadius();
+  *p_FW2 = p_FN2 - vhat_C1C2_F * s2.getRadius();
 
   return true;
 }

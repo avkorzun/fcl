@@ -402,7 +402,7 @@ void octomap_collision_test_contact_primitive_id(
       EXPECT_TRUE(octree_node == get_node_rv);
 
       const fcl::BVHModel<fcl::OBBRSS<S>>* surface = static_cast<const fcl::BVHModel<fcl::OBBRSS<S>>*> (contact.o2);
-      EXPECT_TRUE(surface->num_tris > contact.b2);
+      EXPECT_TRUE(surface->getNumTris() > contact.b2);
     }
   }
 }

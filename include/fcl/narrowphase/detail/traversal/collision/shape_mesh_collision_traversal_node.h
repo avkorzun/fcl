@@ -63,8 +63,8 @@ public:
   /// @brief Whether the traversal process can stop early
   bool canStop() const;
 
-  Vector3<S>* vertices;
-  Triangle* tri_indices;
+  const Vector3<S>* vertices;
+  const Triangle* tri_indices;
 
   S cost_density;
 

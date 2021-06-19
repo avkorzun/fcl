@@ -212,8 +212,8 @@ bool collide_front_list_Test(const Transform3<typename BV::S>& tf1, const Transf
 
   BVHModel<BV> m1;
   BVHModel<BV> m2;
-  m1.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
-  m2.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
+  m1.setSplitMethod(split_method);
+  m2.setSplitMethod(split_method);
 
   detail::BVHFrontList front_list;
 
@@ -285,8 +285,8 @@ bool collide_front_list_Test_Oriented(const Transform3<typename BV::S>& tf1, con
 
   BVHModel<BV> m1;
   BVHModel<BV> m2;
-  m1.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
-  m2.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
+  m1.setSplitMethod(split_method);
+  m2.setSplitMethod(split_method);
 
   detail::BVHFrontList front_list;
 
@@ -339,8 +339,8 @@ bool collide_Test(const Transform3<typename BV::S>& tf,
 
   BVHModel<BV> m1;
   BVHModel<BV> m2;
-  m1.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
-  m2.bv_splitter.reset(new detail::BVSplitter<BV>(split_method));
+  m1.setSplitMethod(split_method);
+  m2.setSplitMethod(split_method);
 
   m1.beginModel();
   m1.addSubModel(vertices1, triangles1);

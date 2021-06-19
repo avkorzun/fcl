@@ -92,8 +92,8 @@ bool sphereCapsuleIntersect(const Sphere<S>& s1, const Transform3<S>& tf1,
                             const Capsule<S>& s2, const Transform3<S>& tf2,
                             std::vector<ContactPoint<S>>* contacts)
 {
-  const Vector3<S> pos1(0., 0., 0.5 * s2.lz);
-  const Vector3<S> pos2(0., 0., -0.5 * s2.lz);
+  const Vector3<S> pos1(0., 0., 0.5 * s2.getLength());
+  const Vector3<S> pos2(0., 0., -0.5 * s2.getLength());
   const Vector3<S> s_c = tf2.inverse(Eigen::Isometry) * tf1.translation();
 
   Vector3<S> segment_point;
@@ -101,7 +101,7 @@ bool sphereCapsuleIntersect(const Sphere<S>& s1, const Transform3<S>& tf1,
   lineSegmentPointClosestToPoint (s_c, pos1, pos2, segment_point);
   Vector3<S> diff = s_c - segment_point;
 
-  const S distance = diff.norm() - s1.radius - s2.radius;
+  const S distance = diff.norm() - s1.getRadius() - s2.getRadius();
 
   if (distance > 0)
     return false;
@@ -126,8 +126,8 @@ bool sphereCapsuleDistance(const Sphere<S>& s1, const Transform3<S>& tf1,
                            const Capsule<S>& s2, const Transform3<S>& tf2,
                            S* dist, Vector3<S>* p1, Vector3<S>* p2)
 {
-  Vector3<S> pos1(0., 0., 0.5 * s2.lz);
-  Vector3<S> pos2(0., 0., -0.5 * s2.lz);
+  Vector3<S> pos1(0., 0., 0.5 * s2.getLength());
+  Vector3<S> pos2(0., 0., -0.5 * s2.getLength());
   Vector3<S> s_c = tf2.inverse(Eigen::Isometry) * tf1.translation();
 
   Vector3<S> segment_point;
@@ -135,7 +135,7 @@ bool sphereCapsuleDistance(const Sphere<S>& s1, const Transform3<S>& tf1,
   lineSegmentPointClosestToPoint (s_c, pos1, pos2, segment_point);
   Vector3<S> diff = s_c - segment_point;
 
-  S distance = diff.norm() - s1.radius - s2.radius;
+  S distance = diff.norm() - s1.getRadius() - s2.getRadius();
 
   if(distance <= 0) {
     // NOTE: By assigning this a negative value, it allows the ultimately
@@ -153,13 +153,13 @@ bool sphereCapsuleDistance(const Sphere<S>& s1, const Transform3<S>& tf1,
   if(p1 || p2) diff.normalize();
   if(p1)
   {
-    *p1 = s_c - diff * s1.radius;
+    *p1 = s_c - diff * s1.getRadius();
     *p1 = tf2 * (*p1);
   }
 
   if(p2)
   {
-    *p2 = segment_point + diff * s2.radius;
+    *p2 = segment_point + diff * s2.getRadius();
     *p2 = tf2 * (*p2);
   }
 

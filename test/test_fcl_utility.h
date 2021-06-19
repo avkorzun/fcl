@@ -553,8 +553,8 @@ void generateBoxesFromOctomap(std::vector<CollisionObject<S>*>& boxes, OcTree<S>
     S threshold = boxes_[i][5];
 
     Box<S>* box = new Box<S>(size, size, size);
-    box->cost_density = cost;
-    box->threshold_occupied = threshold;
+    box->setCostDensity(cost);
+    box->setThresholdOccupied(threshold);
     CollisionObject<S>* obj = new CollisionObject<S>(std::shared_ptr<CollisionGeometry<S>>(box), Transform3<S>(Translation3<S>(Vector3<S>(x, y, z))));
     boxes.push_back(obj);
   }
@@ -581,8 +581,8 @@ void generateBoxesFromOctomapMesh(std::vector<CollisionObject<S>*>& boxes, OcTre
     Box<S> box(size, size, size);
     BVHModel<OBBRSS<S>>* model = new BVHModel<OBBRSS<S>>();
     generateBVHModel(*model, box, Transform3<S>::Identity());
-    model->cost_density = cost;
-    model->threshold_occupied = threshold;
+    model->setCostDensity(cost);
+    model->setThresholdOccupied(threshold);
     CollisionObject<S>* obj = new CollisionObject<S>(std::shared_ptr<CollisionGeometry<S>>(model), Transform3<S>(Translation3<S>(Vector3<S>(x, y, z))));
     boxes.push_back(obj);
   }

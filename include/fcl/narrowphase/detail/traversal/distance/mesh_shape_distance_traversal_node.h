@@ -64,8 +64,8 @@ public:
   /// @brief Whether the traversal process can stop early
   bool canStop(S c) const;
 
-  Vector3<S>* vertices;
-  Triangle* tri_indices;
+  const Vector3<S>* vertices;
+  const Triangle* tri_indices;
 
   S rel_err;
   S abs_err;
@@ -78,8 +78,8 @@ void meshShapeDistanceOrientedNodeLeafTesting(
     int b1, int /* b2 */,
     const BVHModel<BV>* model1,
     const Shape& model2,
-    Vector3<typename BV::S>* vertices,
-    Triangle* tri_indices,
+    const Vector3<typename BV::S>* vertices,
+    const Triangle* tri_indices,
     const Transform3<typename BV::S>& tf1,
     const Transform3<typename BV::S>& tf2,
     const NarrowPhaseSolver* nsolver,
@@ -92,8 +92,8 @@ void meshShapeDistanceOrientedNodeLeafTesting(
 template <typename BV, typename Shape, typename NarrowPhaseSolver>
 void distancePreprocessOrientedNode(
     const BVHModel<BV>* model1,
-    Vector3<typename BV::S>* vertices,
-    Triangle* tri_indices,
+    const Vector3<typename BV::S>* vertices,
+    const Triangle* tri_indices,
     int init_tri_id,
     const Shape& model2,
     const Transform3<typename BV::S>& tf1,

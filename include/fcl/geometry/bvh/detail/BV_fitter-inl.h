@@ -60,8 +60,8 @@ struct SetImpl;
 //==============================================================================
 template <typename BV>
 void BVFitter<BV>::set(
-    Vector3<typename BVFitter<BV>::S>* vertices_,
-    Triangle* tri_indices_,
+    const Vector3<typename BVFitter<BV>::S>* vertices_,
+    const Triangle* tri_indices_,
     BVHModelType type_)
 {
   SetImpl<typename BV::S, BV>::run(*this, vertices_, tri_indices_, type_);
@@ -70,9 +70,9 @@ void BVFitter<BV>::set(
 //==============================================================================
 template <typename BV>
 void BVFitter<BV>::set(
-    Vector3<typename BVFitter<BV>::S>* vertices_,
-    Vector3<typename BVFitter<BV>::S>* prev_vertices_,
-    Triangle* tri_indices_,
+    const Vector3<typename BVFitter<BV>::S>* vertices_,
+    const Vector3<typename BVFitter<BV>::S>* prev_vertices_,
+    const Triangle* tri_indices_,
     BVHModelType type_)
 {
   SetImpl<typename BV::S, BV>::run(
@@ -107,8 +107,8 @@ struct SetImpl
 {
   static void run(
       BVFitter<BV>& fitter,
-      Vector3<S>* vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_)
   {
     fitter.vertices = vertices_;
@@ -119,9 +119,9 @@ struct SetImpl
 
   static void run(
       BVFitter<BV>& fitter,
-      Vector3<S>* vertices_,
-      Vector3<S>* prev_vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Vector3<S>* prev_vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_)
   {
     fitter.vertices = vertices_;
@@ -137,8 +137,8 @@ struct SetImpl<S, OBB<S>>
 {
   static void run(
       BVFitter<OBB<S>>& fitter,
-      Vector3<S>* vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_)
   {
     fitter.vertices = vertices_;
@@ -149,9 +149,9 @@ struct SetImpl<S, OBB<S>>
 
   static void run(
       BVFitter<OBB<S>>& fitter,
-      Vector3<S>* vertices_,
-      Vector3<S>* prev_vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Vector3<S>* prev_vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_)
   {
     fitter.vertices = vertices_;
@@ -167,8 +167,8 @@ struct SetImpl<S, RSS<S>>
 {
   static void run(
       BVFitter<RSS<S>>& fitter,
-      Vector3<S>* vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_)
   {
     fitter.vertices = vertices_;
@@ -179,9 +179,9 @@ struct SetImpl<S, RSS<S>>
 
   static void run(
       BVFitter<RSS<S>>& fitter,
-      Vector3<S>* vertices_,
-      Vector3<S>* prev_vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Vector3<S>* prev_vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_)
   {
     fitter.vertices = vertices_;
@@ -197,8 +197,8 @@ struct SetImpl<S, kIOS<S>>
 {
   static void run(
       BVFitter<kIOS<S>>& fitter,
-      Vector3<S>* vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_)
   {
     fitter.vertices = vertices_;
@@ -209,9 +209,9 @@ struct SetImpl<S, kIOS<S>>
 
   static void run(
       BVFitter<kIOS<S>>& fitter,
-      Vector3<S>* vertices_,
-      Vector3<S>* prev_vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Vector3<S>* prev_vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_)
   {
     fitter.vertices = vertices_;
@@ -227,8 +227,8 @@ struct SetImpl<S, OBBRSS<S>>
 {
   static void run(
       BVFitter<OBBRSS<S>>& fitter,
-      Vector3<S>* vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_)
   {
     fitter.vertices = vertices_;
@@ -239,9 +239,9 @@ struct SetImpl<S, OBBRSS<S>>
 
   static void run(
       BVFitter<OBBRSS<S>>& fitter,
-      Vector3<S>* vertices_,
-      Vector3<S>* prev_vertices_,
-      Triangle* tri_indices_,
+      const Vector3<S>* vertices_,
+      const Vector3<S>* prev_vertices_,
+      const Triangle* tri_indices_,
       BVHModelType type_)
   {
     fitter.vertices = vertices_;

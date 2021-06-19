@@ -159,8 +159,8 @@ bool initialize(
 
   if(!tf2.matrix().isIdentity())
   {
-    std::vector<Vector3<S>> vertices_transformed(model2.num_vertices);
-    for(int i = 0; i < model2.num_vertices; ++i)
+    std::vector<Vector3<S>> vertices_transformed(model2.getNumVertices());
+    for(int i = 0; i < model2.getNumVertices(); ++i)
     {
       Vector3<S>& p = model2.vertices[i];
       Vector3<S> new_v = tf2 * p;
@@ -182,13 +182,13 @@ bool initialize(
 
   computeBV(model1, tf1, node.model1_bv);
 
-  node.vertices = model2.vertices;
-  node.tri_indices = model2.tri_indices;
+  node.vertices = model2.getVertices();
+  node.tri_indices = model2.getTriIndices();
 
   node.request = request;
   node.result = &result;
 
-  node.cost_density = model1.cost_density * model2.cost_density;
+  node.cost_density = model1.getCostDensity() * model2.getCostDensity();
 
   return true;
 }
@@ -328,13 +328,13 @@ static bool setupShapeMeshCollisionOrientedNode(OrientedNode<Shape, NarrowPhaseS
 
   computeBV(model1, tf1, node.model1_bv);
 
-  node.vertices = model2.vertices;
-  node.tri_indices = model2.tri_indices;
+  node.vertices = model2.getVertices();
+  node.tri_indices = model2.getTriIndices();
 
   node.request = request;
   node.result = &result;
 
-  node.cost_density = model1.cost_density * model2.cost_density;
+  node.cost_density = model1.getCostDensity() * model2.getCostDensity();
 
   return true;
 }

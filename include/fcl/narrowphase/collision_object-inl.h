@@ -50,12 +50,11 @@ class FCL_EXPORT CollisionObject<double>;
 //==============================================================================
 template <typename S>
 CollisionObject<S>::CollisionObject(
-    const std::shared_ptr<CollisionGeometry<S>>& cgeom_)
-  : cgeom(cgeom_), cgeom_const(cgeom_), t(Transform3<S>::Identity())
+    const std::shared_ptr<const CollisionGeometry<S>>& cgeom_)
+  : cgeom_const(cgeom_), t(Transform3<S>::Identity())
 {
-  if (cgeom)
+  if (cgeom_const)
   {
-    cgeom->computeLocalAABB();
     computeAABB();
   }
 }
@@ -63,25 +62,23 @@ CollisionObject<S>::CollisionObject(
 //==============================================================================
 template <typename S>
 CollisionObject<S>::CollisionObject(
-    const std::shared_ptr<CollisionGeometry<S>>& cgeom_,
+    const std::shared_ptr<const CollisionGeometry<S>>& cgeom_,
     const Transform3<S>& tf)
-  : cgeom(cgeom_), cgeom_const(cgeom_), t(tf)
+  : cgeom_const(cgeom_), t(tf)
 {
-  cgeom->computeLocalAABB();
   computeAABB();
 }
 
 //==============================================================================
 template <typename S>
 CollisionObject<S>::CollisionObject(
-    const std::shared_ptr<CollisionGeometry<S>>& cgeom_,
+    const std::shared_ptr<const CollisionGeometry<S>>& cgeom_,
     const Matrix3<S>& R,
     const Vector3<S>& T)
-  : cgeom(cgeom_), cgeom_const(cgeom_), t(Transform3<S>::Identity())
+  : cgeom_const(cgeom_), t(Transform3<S>::Identity())
 {
   t.linear() = R;
   t.translation() = T;
-  cgeom->computeLocalAABB();
   computeAABB();
 }
 
@@ -96,14 +93,14 @@ CollisionObject<S>::~CollisionObject()
 template <typename S>
 OBJECT_TYPE CollisionObject<S>::getObjectType() const
 {
-  return cgeom->getObjectType();
+  return cgeom_const->getObjectType();
 }
 
 //==============================================================================
 template <typename S>
 NODE_TYPE CollisionObject<S>::getNodeType() const
 {
-  return cgeom->getNodeType();
+  return cgeom_const->getNodeType();
 }
 
 //==============================================================================
@@ -119,12 +116,12 @@ void CollisionObject<S>::computeAABB()
 {
   if(t.linear().isIdentity())
   {
-    aabb = translate(cgeom->aabb_local, t.translation());
+    aabb = translate(cgeom_const->getLocalAABB(), t.translation());
   }
   else
   {
-    Vector3<S> center = t * cgeom->aabb_center;
-    Vector3<S> delta = Vector3<S>::Constant(cgeom->aabb_radius);
+    Vector3<S> center = t * cgeom_const->getLocalAABBCenter();
+    Vector3<S> delta = Vector3<S>::Constant(cgeom_const->getAABBRadius());
     aabb.min_ = center - delta;
     aabb.max_ = center + delta;
   }
@@ -234,7 +231,7 @@ void CollisionObject<S>::setIdentityTransform()
 template <typename S>
 const CollisionGeometry<S>*CollisionObject<S>::getCollisionGeometry() const
 {
-  return cgeom.get();
+  return cgeom_const.get();
 }
 
 //==============================================================================
@@ -249,35 +246,28 @@ CollisionObject<S>::collisionGeometry() const
 template <typename S>
 S CollisionObject<S>::getCostDensity() const
 {
-  return cgeom->cost_density;
-}
-
-//==============================================================================
-template <typename S>
-void CollisionObject<S>::setCostDensity(S c)
-{
-  cgeom->cost_density = c;
+  return cgeom_const->getCostDensity();
 }
 
 //==============================================================================
 template <typename S>
 bool CollisionObject<S>::isOccupied() const
 {
-  return cgeom->isOccupied();
+  return cgeom_const->isOccupied();
 }
 
 //==============================================================================
 template <typename S>
 bool CollisionObject<S>::isFree() const
 {
-  return cgeom->isFree();
+  return cgeom_const->isFree();
 }
 
 //==============================================================================
 template <typename S>
 bool CollisionObject<S>::isUncertain() const
 {
-  return cgeom->isUncertain();
+  return cgeom_const->isUncertain();
 }
 
 } // namespace fcl

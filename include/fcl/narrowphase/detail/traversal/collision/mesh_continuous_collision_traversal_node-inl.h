@@ -103,10 +103,10 @@ void MeshContinuousCollisionTraversalNode<BV>::leafTesting(int b1, int b2) const
   const Triangle& tri_id1 = tri_indices1[primitive_id1];
   const Triangle& tri_id2 = tri_indices2[primitive_id2];
 
-  Vector3<S>* S0[3];
-  Vector3<S>* S1[3];
-  Vector3<S>* T0[3];
-  Vector3<S>* T1[3];
+  const Vector3<S>* S0[3];
+  const Vector3<S>* S1[3];
+  const Vector3<S>* T0[3];
+  const Vector3<S>* T1[3];
 
   for(int i = 0; i < 3; ++i)
   {
@@ -193,14 +193,14 @@ bool initialize(
   node.model2 = &model2;
   node.tf2 = tf2;
 
-  node.vertices1 = model1.vertices;
-  node.vertices2 = model2.vertices;
+  node.vertices1 = model1.getVertices();
+  node.vertices2 = model2.getVertices();
 
-  node.tri_indices1 = model1.tri_indices;
-  node.tri_indices2 = model2.tri_indices;
+  node.tri_indices1 = model1.getTriIndices();
+  node.tri_indices2 = model2.getTriIndices();
 
-  node.prev_vertices1 = model1.prev_vertices;
-  node.prev_vertices2 = model2.prev_vertices;
+  node.prev_vertices1 = model1.getPrevVertices();
+  node.prev_vertices2 = model2.getPrevVertices();
 
   node.request = request;
 

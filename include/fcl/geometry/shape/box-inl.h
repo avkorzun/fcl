@@ -52,7 +52,7 @@ template <typename S>
 Box<S>::Box(S x, S y, S z)
   : ShapeBase<S>(), side(x, y, z)
 {
-  // Do nothing
+  computeLocalAABB();
 }
 
 //==============================================================================
@@ -60,7 +60,7 @@ template <typename S>
 Box<S>::Box(const Vector3<S>& side_)
   : ShapeBase<S>(), side(side_)
 {
-  // Do nothing
+  computeLocalAABB();
 }
 
 //==============================================================================
@@ -68,7 +68,7 @@ template <typename S>
 Box<S>::Box()
   : ShapeBase<S>(), side(Vector3<S>::Zero())
 {
-  // Do nothing
+  computeLocalAABB();
 }
 
 //==============================================================================
@@ -81,6 +81,13 @@ void Box<S>::computeLocalAABB()
 
   this->aabb_center = this->aabb_local.center();
   this->aabb_radius = (this->aabb_local.min_ - this->aabb_center).norm();
+}
+
+//==============================================================================
+template <typename S>
+const Vector3<S> &Box<S>::getSide() const
+{
+  return side;
 }
 
 //==============================================================================

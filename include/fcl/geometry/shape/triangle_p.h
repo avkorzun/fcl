@@ -56,6 +56,10 @@ public:
   TriangleP(const Vector3<S>& a,
             const Vector3<S>& b,
             const Vector3<S>& c);
+  
+  const Vector3<S> &getA() const;
+  const Vector3<S> &getB() const;
+  const Vector3<S> &getC() const;
 
   /// @brief virtual function of compute AABB<S> in local coordinate
   void computeLocalAABB() override;
@@ -63,9 +67,6 @@ public:
   // Documentation inherited
   NODE_TYPE getNodeType() const override;
 
-  Vector3<S> a;
-  Vector3<S> b;
-  Vector3<S> c;
 
   /// @brief get the vertices of some convex shape which can bound this shape in
   /// a specific configuration
@@ -73,10 +74,15 @@ public:
 
   friend
   std::ostream& operator<<(std::ostream& out, const TriangleP& tri) {
-    out << "TriangleP(a: " << tri.a.transpose()
-        << ", b: " << tri.b.transpose() << ", c: " << tri.c.transpose() << ")";
+    out << "TriangleP(a: " << tri.getA().transpose()
+        << ", b: " << tri.getB().transpose() << ", c: " << tri.getC().transpose() << ")";
     return out;
   }
+private:
+
+  Vector3<S> a;
+  Vector3<S> b;
+  Vector3<S> c;
 };
 
 using TrianglePf = TriangleP<float>;

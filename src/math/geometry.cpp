@@ -75,7 +75,7 @@ template
 void getRadiusAndOriginAndRectangleSize(
     const Vector3d* const ps,
     const Vector3d* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     const Matrix3d& axis,
@@ -88,7 +88,7 @@ template
 void getRadiusAndOriginAndRectangleSize(
     const Vector3d* const ps,
     const Vector3d* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     Transform3d& tf,
@@ -109,7 +109,7 @@ template
 double maximumDistance(
     const Vector3d* const ps,
     const Vector3d* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     const Vector3d& query);
@@ -119,7 +119,7 @@ template
 void getExtentAndCenter(
     const Vector3d* const ps,
     const Vector3d* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     const Matrix3d& axis,
@@ -131,7 +131,7 @@ template
 void getCovariance(
     const Vector3d* const ps,
     const Vector3d* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n, Matrix3d& M);
 
@@ -144,7 +144,7 @@ template
 double maximumDistance_mesh(
     const Vector3d* const ps,
     const Vector3d* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     const Vector3d& query);
@@ -174,7 +174,7 @@ template
 void getExtentAndCenter_mesh(
     const Vector3d* const ps,
     const Vector3d* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     const Matrix3d& axis,

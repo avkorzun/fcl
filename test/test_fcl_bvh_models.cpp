@@ -51,9 +51,9 @@ void testBVHModelPointCloud()
   std::shared_ptr<BVHModel<BV> > model(new BVHModel<BV>);
 
   Box<S> box;
-  auto a = box.side[0];
-  auto b = box.side[1];
-  auto c = box.side[2];
+  auto a = box.getSide()[0];
+  auto b = box.getSide()[1];
+  auto c = box.getSide()[2];
   std::vector<Vector3<S>> points(8);
   points[0] << 0.5 * a, -0.5 * b, 0.5 * c;
   points[1] << 0.5 * a, 0.5 * b, 0.5 * c;
@@ -80,9 +80,9 @@ void testBVHModelPointCloud()
 
   model->computeLocalAABB();
 
-  EXPECT_EQ(model->num_vertices, 8);
-  EXPECT_EQ(model->num_tris, 0);
-  EXPECT_EQ(model->build_state, BVH_BUILD_STATE_PROCESSED);
+  EXPECT_EQ(model->getNumVertices(), 8);
+  EXPECT_EQ(model->getNumTris(), 0);
+  EXPECT_EQ(model->getBuildState(), BVH_BUILD_STATE_PROCESSED);
 }
 
 template<typename BV>
@@ -93,9 +93,9 @@ void testBVHModelTriangles()
   std::shared_ptr<BVHModel<BV> > model(new BVHModel<BV>);
   Box<S> box;
 
-  auto a = box.side[0];
-  auto b = box.side[1];
-  auto c = box.side[2];
+  auto a = box.getSide()[0];
+  auto b = box.getSide()[1];
+  auto c = box.getSide()[2];
   std::vector<Vector3<S>> points(8);
   std::vector<Triangle> tri_indices(12);
   points[0] << 0.5 * a, -0.5 * b, 0.5 * c;
@@ -136,9 +136,9 @@ void testBVHModelTriangles()
 
   model->computeLocalAABB();
 
-  EXPECT_EQ(model->num_vertices, 12 * 3);
-  EXPECT_EQ(model->num_tris, 12);
-  EXPECT_EQ(model->build_state, BVH_BUILD_STATE_PROCESSED);
+  EXPECT_EQ(model->getNumVertices(), 12 * 3);
+  EXPECT_EQ(model->getNumTris(), 12);
+  EXPECT_EQ(model->getBuildState(), BVH_BUILD_STATE_PROCESSED);
 }
 
 template<typename BV>
@@ -149,9 +149,9 @@ void testBVHModelSubModel()
   std::shared_ptr<BVHModel<BV> > model(new BVHModel<BV>);
   Box<S> box;
 
-  auto a = box.side[0];
-  auto b = box.side[1];
-  auto c = box.side[2];
+  auto a = box.getSide()[0];
+  auto b = box.getSide()[1];
+  auto c = box.getSide()[2];
   std::vector<Vector3<S>> points(8);
   std::vector<Triangle> tri_indices(12);
   points[0] << 0.5 * a, -0.5 * b, 0.5 * c;
@@ -189,9 +189,9 @@ void testBVHModelSubModel()
 
   model->computeLocalAABB();
 
-  EXPECT_EQ(model->num_vertices, 8);
-  EXPECT_EQ(model->num_tris, 12);
-  EXPECT_EQ(model->build_state, BVH_BUILD_STATE_PROCESSED);
+  EXPECT_EQ(model->getNumVertices(), 8);
+  EXPECT_EQ(model->getNumTris(), 12);
+  EXPECT_EQ(model->getBuildState(), BVH_BUILD_STATE_PROCESSED);
 }
 
 template<typename BV>

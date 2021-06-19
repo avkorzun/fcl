@@ -157,7 +157,21 @@ public:
 
   Matrix3<S> computeMomentofInertia() const override;
 
-public:
+  const Vector3<S> *getVertices() const;
+
+  const Triangle *getTriIndices() const;
+
+  const Vector3<S> *getPrevVertices() const;
+
+  int getNumTris() const;
+
+  int getNumVertices() const;
+
+  BVHBuildState getBuildState() const;
+
+  void setSplitMethod(detail::SplitMethodType method);
+
+private:
   /// @brief Geometry point data
   Vector3<S>* vertices;
 
@@ -181,8 +195,6 @@ public:
 
   /// @brief Fitting rule to fit a BV node to a set of geometry primitives
   std::shared_ptr<detail::BVFitterBase<BV>> bv_fitter;
-
-private:
 
   int num_tris_allocated;
   int num_vertices_allocated;

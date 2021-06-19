@@ -87,7 +87,7 @@ bool collisionRecurse_(
           Transform3<S> box_tf;
           constructBox(root2_bv, tf2, *box, box_tf);
 
-          box->cost_density = tree2->getDefaultOccupancy();
+          box->setCostDensity(tree2->getDefaultOccupancy());
 
           CollisionObject<S> obj2(std::shared_ptr<CollisionGeometry<S>>(box), box_tf);
           return callback(obj1, &obj2, cdata);
@@ -120,8 +120,8 @@ bool collisionRecurse_(
         Transform3<S> box_tf;
         constructBox(root2_bv, tf2, *box, box_tf);
 
-        box->cost_density = root2->getOccupancy();
-        box->threshold_occupied = tree2->getOccupancyThres();
+        box->setCostDensity(root2->getOccupancy());
+        box->setThresholdOccupied(tree2->getOccupancyThres());
 
         CollisionObject<S> obj2(std::shared_ptr<CollisionGeometry<S>>(box), box_tf);
         return callback(obj1, &obj2, cdata);
@@ -198,7 +198,7 @@ bool collisionRecurse_(
           tf2.translation() = translation2;
           constructBox(root2_bv, tf2, *box, box_tf);
 
-          box->cost_density = tree2->getOccupancyThres(); // thresholds are 0, 1, so uncertain
+          box->setCostDensity(tree2->getOccupancyThres()); // thresholds are 0, 1, so uncertain
 
           CollisionObject<S> obj2(std::shared_ptr<CollisionGeometry<S>>(box), box_tf);
           return callback(obj1, &obj2, cdata);
@@ -230,8 +230,8 @@ bool collisionRecurse_(
         tf2.translation() = translation2;
         constructBox(root2_bv, tf2, *box, box_tf);
 
-        box->cost_density = root2->getOccupancy();
-        box->threshold_occupied = tree2->getOccupancyThres();
+        box->setCostDensity(root2->getOccupancy());
+        box->setThresholdOccupied(tree2->getOccupancyThres());
 
         CollisionObject<S> obj2(std::shared_ptr<CollisionGeometry<S>>(box), box_tf);
         return callback(obj1, &obj2, cdata);

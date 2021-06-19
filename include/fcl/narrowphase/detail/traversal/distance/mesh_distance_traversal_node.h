@@ -66,11 +66,11 @@ public:
   /// @brief Whether the traversal process can stop early
   bool canStop(S c) const;
 
-  Vector3<S>* vertices1;
-  Vector3<S>* vertices2;
+  const Vector3<S>* vertices1;
+  const Vector3<S>* vertices2;
 
-  Triangle* tri_indices1;
-  Triangle* tri_indices2;
+  const Triangle* tri_indices1;
+  const Triangle* tri_indices2;
 
   /// @brief relative and absolute error, default value is 0.01 for both terms
   S rel_err;
@@ -222,10 +222,10 @@ void meshDistanceOrientedNodeLeafTesting(
     int b2,
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
-    Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices1,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     const Matrix3<typename BV::S>& R,
     const Vector3<typename BV::S>& T,
     bool enable_statistics,
@@ -240,10 +240,10 @@ void meshDistanceOrientedNodeLeafTesting(
     int b2,
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
-    Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices1,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     const Transform3<typename BV::S>& tf,
     bool enable_statistics,
     int& num_leaf_tests,
@@ -256,9 +256,9 @@ void distancePreprocessOrientedNode(
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
     const Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     int init_tri_id1,
     int init_tri_id2,
     const Matrix3<typename BV::S>& R,
@@ -272,9 +272,9 @@ void distancePreprocessOrientedNode(
     const BVHModel<BV>* model1,
     const BVHModel<BV>* model2,
     const Vector3<typename BV::S>* vertices1,
-    Vector3<typename BV::S>* vertices2,
-    Triangle* tri_indices1,
-    Triangle* tri_indices2,
+    const Vector3<typename BV::S>* vertices2,
+    const Triangle* tri_indices1,
+    const Triangle* tri_indices2,
     int init_tri_id1,
     int init_tri_id2,
     const Transform3<typename BV::S>& tf,

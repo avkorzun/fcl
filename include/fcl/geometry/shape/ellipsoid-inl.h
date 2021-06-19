@@ -52,7 +52,7 @@ template <typename S>
 Ellipsoid<S>::Ellipsoid(S a, S b, S c)
   : ShapeBase<S>(), radii(a, b, c)
 {
-  // Do nothing
+  computeLocalAABB();
 }
 
 //==============================================================================
@@ -60,7 +60,7 @@ template <typename S>
 Ellipsoid<S>::Ellipsoid(const Vector3<S>& radii)
   : ShapeBase<S>(), radii(radii)
 {
-  // Do nothing
+  computeLocalAABB();
 }
 
 //==============================================================================
@@ -72,6 +72,13 @@ void Ellipsoid<S>::computeLocalAABB()
 
   this->aabb_center = this->aabb_local.center();
   this->aabb_radius = (this->aabb_local.min_ - this->aabb_center).norm();
+}
+
+//==============================================================================
+template <typename S>
+const Vector3<S> &Ellipsoid<S>::getRadii() const
+{
+  return radii;
 }
 
 //==============================================================================

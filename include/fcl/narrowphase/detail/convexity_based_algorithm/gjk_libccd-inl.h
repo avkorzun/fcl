@@ -2278,9 +2278,9 @@ template <typename S>
 static void boxToGJK(const Box<S>& s, const Transform3<S>& tf, ccd_box_t* box)
 {
   shapeToGJK(s, tf, box);
-  box->dim[0] = s.side[0] / 2.0;
-  box->dim[1] = s.side[1] / 2.0;
-  box->dim[2] = s.side[2] / 2.0;
+  box->dim[0] = s.getSide()[0] / 2.0;
+  box->dim[1] = s.getSide()[1] / 2.0;
+  box->dim[2] = s.getSide()[2] / 2.0;
 }
 
 template <typename S>
@@ -2288,8 +2288,8 @@ static void capToGJK(const Capsule<S>& s, const Transform3<S>& tf,
                      ccd_cap_t* cap)
 {
   shapeToGJK(s, tf, cap);
-  cap->radius = s.radius;
-  cap->height = s.lz / 2;
+  cap->radius = s.getRadius();
+  cap->height = s.getLength() / 2;
 }
 
 template <typename S>
@@ -2297,8 +2297,8 @@ static void cylToGJK(const Cylinder<S>& s, const Transform3<S>& tf,
                      ccd_cyl_t* cyl)
 {
   shapeToGJK(s, tf, cyl);
-  cyl->radius = s.radius;
-  cyl->height = s.lz / 2;
+  cyl->radius = s.getRadius();
+  cyl->height = s.getLength() / 2;
 }
 
 template <typename S>
@@ -2306,8 +2306,8 @@ static void coneToGJK(const Cone<S>& s, const Transform3<S>& tf,
                       ccd_cone_t* cone)
 {
   shapeToGJK(s, tf, cone);
-  cone->radius = s.radius;
-  cone->height = s.lz / 2;
+  cone->radius = s.getRadius();
+  cone->height = s.getLength() / 2;
 }
 
 template <typename S>
@@ -2315,7 +2315,7 @@ static void sphereToGJK(const Sphere<S>& s, const Transform3<S>& tf,
                         ccd_sphere_t* sph)
 {
   shapeToGJK(s, tf, sph);
-  sph->radius = s.radius;
+  sph->radius = s.getRadius();
 }
 
 template <typename S>
@@ -2323,9 +2323,9 @@ static void ellipsoidToGJK(const Ellipsoid<S>& s, const Transform3<S>& tf,
                            ccd_ellipsoid_t* ellipsoid)
 {
   shapeToGJK(s, tf, ellipsoid);
-  ellipsoid->radii[0] = s.radii[0];
-  ellipsoid->radii[1] = s.radii[1];
-  ellipsoid->radii[2] = s.radii[2];
+  ellipsoid->radii[0] = s.getRadii()[0];
+  ellipsoid->radii[1] = s.getRadii()[1];
+  ellipsoid->radii[2] = s.getRadii()[2];
 }
 
 template <typename S>

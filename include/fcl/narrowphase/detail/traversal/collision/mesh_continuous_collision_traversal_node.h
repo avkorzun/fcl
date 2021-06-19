@@ -81,14 +81,14 @@ public:
   /// @brief Whether the traversal process can stop early
   bool canStop() const;
 
-  Vector3<S>* vertices1;
-  Vector3<S>* vertices2;
+  const Vector3<S>* vertices1;
+  const Vector3<S>* vertices2;
 
-  Triangle* tri_indices1;
-  Triangle* tri_indices2;
+  const Triangle* tri_indices1;
+  const Triangle* tri_indices2;
 
-  Vector3<S>* prev_vertices1;
-  Vector3<S>* prev_vertices2;
+  const Vector3<S>* prev_vertices1;
+  const Vector3<S>* prev_vertices2;
 
   mutable int num_vf_tests;
   mutable int num_ee_tests;

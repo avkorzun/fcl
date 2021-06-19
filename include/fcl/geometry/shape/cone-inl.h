@@ -52,7 +52,7 @@ template <typename S>
 Cone<S>::Cone(S radius, S lz)
   : ShapeBase<S>(), radius(radius), lz(lz)
 {
-  // Do nothing
+  computeLocalAABB();
 }
 
 //==============================================================================
@@ -65,6 +65,20 @@ void Cone<S>::computeLocalAABB()
 
   this->aabb_center = this->aabb_local.center();
   this->aabb_radius = (this->aabb_local.min_ - this->aabb_center).norm();
+}
+
+//==============================================================================
+template <typename S>
+S Cone<S>::getRadius() const
+{
+  return radius;
+}
+
+//==============================================================================
+template <typename S>
+S Cone<S>::getLength() const
+{
+  return lz;
 }
 
 //==============================================================================

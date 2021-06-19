@@ -75,7 +75,7 @@ BVHModel<BV>::BVHModel() : vertices(nullptr),
   bvs(nullptr),
   num_bvs(0)
 {
-  // Do nothing
+  computeLocalAABB();
 }
 
 //==============================================================================
@@ -183,6 +183,55 @@ template <typename BV>
 OBJECT_TYPE BVHModel<BV>::getObjectType() const
 {
   return OT_BVH;
+}
+
+//==============================================================================
+template <typename BV>
+const Vector3<typename BV::S> *BVHModel<BV>::getVertices() const
+{
+  return vertices;
+}
+
+//==============================================================================
+template <typename BV>
+const Triangle *BVHModel<BV>::getTriIndices() const
+{
+  return tri_indices;
+}
+
+//==============================================================================
+template <typename BV>
+const Vector3<typename BV::S> *BVHModel<BV>::getPrevVertices() const
+{
+  return prev_vertices;
+}
+
+//==============================================================================
+template <typename BV>
+int BVHModel<BV>::getNumTris() const
+{
+  return num_tris;
+}
+
+//==============================================================================
+template <typename BV>
+int BVHModel<BV>::getNumVertices() const
+{
+  return num_vertices;
+}
+
+//==============================================================================
+template <typename BV>
+BVHBuildState BVHModel<BV>::getBuildState() const
+{
+  return build_state;
+}
+
+//==============================================================================
+template <typename BV>
+void BVHModel<BV>::setSplitMethod(detail::SplitMethodType method)
+{
+  bv_splitter.reset(new detail::BVSplitter<BV>(method));
 }
 
 //==============================================================================
@@ -510,6 +559,8 @@ int BVHModel<BV>::endModel()
 
   buildTree();
 
+  computeLocalAABB();
+
   // finish constructing
   build_state = BVH_BUILD_STATE_PROCESSED;
 
@@ -613,6 +664,8 @@ int BVHModel<BV>::endReplaceModel(bool refit, bool bottomup)
   {
     buildTree();
   }
+
+  computeLocalAABB();
 
   build_state = BVH_BUILD_STATE_PROCESSED;
 
@@ -727,6 +780,7 @@ int BVHModel<BV>::endUpdateModel(bool refit, bool bottomup)
     refitTree(bottomup);
   }
 
+  computeLocalAABB();
 
   build_state = BVH_BUILD_STATE_UPDATED;
 

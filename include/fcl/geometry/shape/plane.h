@@ -61,6 +61,12 @@ public:
 
   Plane();
 
+  /// @brief Plane normal
+  const Vector3<S> &getNormal() const;
+  
+  /// @brief Plane offset
+  S getOffset() const;
+
   S signedDistance(const Vector3<S>& p) const;
 
   S distance(const Vector3<S>& p) const;
@@ -71,15 +77,9 @@ public:
   /// @brief Get node type: a plane 
   NODE_TYPE getNodeType() const override;
 
-  /// @brief Plane normal 
-  Vector3<S> n;
-
-  /// @brief Plane offset 
-  S d;
-
   friend
   std::ostream& operator<<(std::ostream& out, const Plane& plane) {
-    out << "Plane(n: " << plane.n.transpose() << ", d: " << plane.d << ")";
+    out << "Plane(n: " << plane.getNormal().transpose() << ", d: " << plane.getOffset() << ")";
     return out;
   }
 
@@ -87,6 +87,14 @@ protected:
   
   /// @brief Turn non-unit normal into unit 
   void unitNormalTest();
+
+private:
+  
+  /// @brief Plane normal
+  Vector3<S> n;
+  
+  /// @brief Plane offset
+  S d;
 };
 
 using Planef = Plane<float>;

@@ -320,18 +320,18 @@ bool initialize(
 {
   using S = typename BV::S;
 
-  std::vector<Vector3<S>> vertices_transformed1(model1.num_vertices);
-  for(int i = 0; i < model1.num_vertices; ++i)
+  std::vector<Vector3<S>> vertices_transformed1(model1.getNumVertices());
+  for(int i = 0; i < model1.getNumVertices(); ++i)
   {
-    Vector3<S>& p = model1.vertices[i];
+    const Vector3<S>& p = model1.getVertices()[i];
     Vector3<S> new_v = tf1 * p;
     vertices_transformed1[i] = new_v;
   }
 
-  std::vector<Vector3<S>> vertices_transformed2(model2.num_vertices);
-  for(int i = 0; i < model2.num_vertices; ++i)
+  std::vector<Vector3<S>> vertices_transformed2(model2.getNumVertices());
+  for(int i = 0; i < model2.getNumVertices(); ++i)
   {
-    Vector3<S>& p = model2.vertices[i];
+    const Vector3<S>& p = model2.getVertices()[i];
     Vector3<S> new_v = tf2 * p;
     vertices_transformed2[i] = new_v;
   }
@@ -347,11 +347,11 @@ bool initialize(
   node.model1 = &model1;
   node.model2 = &model2;
 
-  node.vertices1 = model1.vertices;
-  node.vertices2 = model2.vertices;
+  node.vertices1 = model1.getVertices();
+  node.vertices2 = model2.getVertices();
 
-  node.tri_indices1 = model1.tri_indices;
-  node.tri_indices2 = model2.tri_indices;
+  node.tri_indices1 = model1.getTriIndices();
+  node.tri_indices2 = model2.getTriIndices();
 
   node.w = w;
 
@@ -759,11 +759,11 @@ bool setupMeshConservativeAdvancementOrientedDistanceNode(
   node.model1 = &model1;
   node.model2 = &model2;
 
-  node.vertices1 = model1.vertices;
-  node.vertices2 = model2.vertices;
+  node.vertices1 = model1.getVertices();
+  node.vertices2 = model2.getVertices();
 
-  node.tri_indices1 = model1.tri_indices;
-  node.tri_indices2 = model2.tri_indices;
+  node.tri_indices1 = model1.getTriIndices();
+  node.tri_indices2 = model2.getTriIndices();
 
   node.w = w;
 

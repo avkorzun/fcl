@@ -60,7 +60,7 @@ public:
   Ellipsoid(const Vector3<S>& radii);
 
   /// @brief Radii of the ellipsoid
-  Vector3<S> radii;
+  const Vector3<S> &getRadii() const;
 
   /// @brief Compute AABB
   void computeLocalAABB() override;
@@ -80,9 +80,14 @@ public:
 
   friend
   std::ostream& operator<<(std::ostream& out, const Ellipsoid& ellipsoid) {
-    out << "Ellipsoid(radii: " << ellipsoid.radii.transpose() << ")";
+    out << "Ellipsoid(radii: " << ellipsoid.getRadii().transpose() << ")";
     return out;
   }
+
+private:
+
+  /// @brief Radii of the ellipsoid
+  Vector3<S> radii;
 };
 
 using Ellipsoidf = Ellipsoid<float>;

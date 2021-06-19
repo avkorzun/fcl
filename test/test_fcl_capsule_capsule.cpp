@@ -637,14 +637,14 @@ class CapsuleCapsuleSegmentTest : public ::testing::Test {
     // The reported distance cannot be less than -(r1 + r2); that is the deepest
     // penetration possible.
     using std::max;
-    expected_distance_ = max(distance, -(c1_.radius + c2_.radius));
+    expected_distance_ = max(distance, -(c1_.getRadius() + c2_.getRadius()));
 
     Transform3<S> X_TC1 = Transform3<S>::Identity();
     Transform3<S> X_TC2(AngleAxis<S>(pi / 2, Vector3<S>::UnitY()));
     X_TC2.translation() << S(0), S(0),
-        c1_.lz / 2 + c1_.radius + c2_.radius + distance;
+        c1_.getLength() / 2 + c1_.getRadius() + c2_.getRadius() + distance;
 
-    Vector3<S> p_TW1{S(0), S(0), c1_.lz / S(2) + c1_.radius};
+    Vector3<S> p_TW1{S(0), S(0), c1_.getLength() / S(2) + c1_.getRadius()};
     expected_p_FW1_ = X_FT() * p_TW1;
     Vector3<S> p_TW2{p_TW1(0), p_TW1(1), p_TW1(2) + distance};
     expected_p_FW2_ = X_FT() * p_TW2;
@@ -654,13 +654,13 @@ class CapsuleCapsuleSegmentTest : public ::testing::Test {
   }
 
   void ConfigureSingleOverlap() {
-    expected_distance_ = -(c1_.radius + c2_.radius);
+    expected_distance_ = -(c1_.getRadius() + c2_.getRadius());
 
     const auto pi = constants<S>::pi();
     Transform3<S> X_TC1 = Transform3<S>::Identity();
     Transform3<S> X_TC2(AngleAxis<S>(pi / S(2), Vector3<S>::UnitY()));
     // Position C2 halfway up the upper length of C1.
-    X_TC2.translation() << S(0), S(0), c1_.lz / S(4);
+    X_TC2.translation() << S(0), S(0), c1_.getLength() / S(4);
 
     // The witness points lie on a line parallel with the Ty direction that
     // passes through the point p_TC2. For each capsule there are *two* points
@@ -669,9 +669,9 @@ class CapsuleCapsuleSegmentTest : public ::testing::Test {
     // to select *one* of those two. This allows the final test to simply
     // compare witness points directly. A change in this special case in the
     // function under test will cause this configuration to fail.
-    Vector3<S> p_TW1{S(0), c1_.radius, c1_.lz / S(4)};
+    Vector3<S> p_TW1{S(0), c1_.getRadius(), c1_.getLength() / S(4)};
     expected_p_FW1_ = X_FT() * p_TW1;
-    Vector3<S> p_TW2{S(0), -c2_.radius, c1_.lz / S(4)};
+    Vector3<S> p_TW2{S(0), -c2_.getRadius(), c1_.getLength() / S(4)};
     expected_p_FW2_ = X_FT() * p_TW2;
 
     X_FC1_ = X_FT() * X_TC1;
@@ -679,13 +679,13 @@ class CapsuleCapsuleSegmentTest : public ::testing::Test {
   }
 
   void ConfigureMultipleOverlap() {
-    expected_distance_ = -(c1_.radius + c2_.radius);
+    expected_distance_ = -(c1_.getRadius() + c2_.getRadius());
 
     Transform3<S> X_TC1 = Transform3<S>::Identity();
     Transform3<S> X_TC2 = Transform3<S>::Identity();
     // Position C2 so that the lower end of its center lines is at the origin
     // and overlaps with the upper end of C1's center line.
-    X_TC2.translation() << S(0), S(0), c2_.lz / S(2);
+    X_TC2.translation() << S(0), S(0), c2_.getLength() / S(2);
 
     // When the two center lines are aligned and overlap, there is an infinite
     // set of witness points. We exploit the knowledge of how the function under
@@ -693,9 +693,9 @@ class CapsuleCapsuleSegmentTest : public ::testing::Test {
     // pick points that line up with the Tx axis. The biggest unknown is where
     // in the range [0, L1/2] along Tz the witness point is placed. Empirically,
     // it is shown to be at p0 (the top of C1's center line).
-    Vector3<S> p_TW1{c1_.radius, S(0), c1_.lz / S(2)};
+    Vector3<S> p_TW1{c1_.getRadius(), S(0), c1_.getLength() / S(2)};
     expected_p_FW1_ = X_FT() * p_TW1;
-    Vector3<S> p_TW2{-c2_.radius, S(0), c1_.lz / S(2)};
+    Vector3<S> p_TW2{-c2_.getRadius(), S(0), c1_.getLength() / S(2)};
     expected_p_FW2_ = X_FT() * p_TW2;
 
     X_FC1_ = X_FT() * X_TC1;

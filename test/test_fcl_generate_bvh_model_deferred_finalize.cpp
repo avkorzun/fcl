@@ -67,18 +67,18 @@ void checkAddToEmptyModel(BVHModel<BV>& model, const ShapeType& shape)
   int ret;
 
   // Make sure we are given an empty model
-  GTEST_ASSERT_EQ(model.build_state, BVH_BUILD_STATE_EMPTY);
-  uint8_t num_vertices = model.num_vertices;
-  uint8_t num_tris = model.num_tris;
+  GTEST_ASSERT_EQ(model.getBuildState(), BVH_BUILD_STATE_EMPTY);
+  uint8_t num_vertices = model.getNumVertices();
+  uint8_t num_tris = model.getNumTris();
   GTEST_ASSERT_EQ(num_vertices, 0);
   GTEST_ASSERT_EQ(num_tris, 0);
 
   // Add the shape to the model and count vertices and triangles to make sure it has been created
   ret = generateBVHModel(model, shape, Transform3<S>::Identity(), n, FinalizeModel::DONT);
   GTEST_ASSERT_EQ(ret, BVH_OK);
-  EXPECT_GT(model.num_vertices, num_vertices);
-  EXPECT_GT(model.num_tris, num_tris); 
-  EXPECT_EQ(model.build_state, BVH_BUILD_STATE_BEGUN);
+  EXPECT_GT(model.getNumVertices(), num_vertices);
+  EXPECT_GT(model.getNumTris(), num_tris); 
+  EXPECT_EQ(model.getBuildState(), BVH_BUILD_STATE_BEGUN);
 }
 
 // Specialization for boxes
@@ -89,16 +89,16 @@ void checkAddToEmptyModel(BVHModel<BV>& model, const Box<typename BV::S>& shape)
   int ret;
 
   // Make sure we are given an empty model
-  GTEST_ASSERT_EQ(model.build_state, BVH_BUILD_STATE_EMPTY);
-  GTEST_ASSERT_EQ(model.num_vertices, 0);
-  GTEST_ASSERT_EQ(model.num_tris, 0);
+  GTEST_ASSERT_EQ(model.getBuildState(), BVH_BUILD_STATE_EMPTY);
+  GTEST_ASSERT_EQ(model.getNumVertices(), 0);
+  GTEST_ASSERT_EQ(model.getNumTris(), 0);
 
   // Add the shape to the model and count vertices and triangles to make sure it has been created
   ret = generateBVHModel(model, shape, Transform3<S>::Identity(), FinalizeModel::DONT);
   GTEST_ASSERT_EQ(ret, BVH_OK);
-  EXPECT_EQ(model.num_vertices, 8);
-  EXPECT_EQ(model.num_tris, 12); 
-  EXPECT_EQ(model.build_state, BVH_BUILD_STATE_BEGUN);
+  EXPECT_EQ(model.getNumVertices(), 8);
+  EXPECT_EQ(model.getNumTris(), 12); 
+  EXPECT_EQ(model.getBuildState(), BVH_BUILD_STATE_BEGUN);
 }
 
 
@@ -116,16 +116,16 @@ void checkAddToUnfinalizedModel(BVHModel<BV>& model, const ShapeType& shape)
   int ret;
 
   // Make sure we are given a model that is already begun
-  GTEST_ASSERT_EQ(model.build_state, BVH_BUILD_STATE_BEGUN);
-  uint8_t num_vertices = model.num_vertices;
-  uint8_t num_tris = model.num_tris;
+  GTEST_ASSERT_EQ(model.getBuildState(), BVH_BUILD_STATE_BEGUN);
+  uint8_t num_vertices = model.getNumVertices();
+  uint8_t num_tris = model.getNumTris();
 
   // Add the shape to the model and count vertices and triangles to make sure it has been created
   ret = generateBVHModel(model, shape, Transform3<S>(Translation3<S>(Vector3<S>(2.0, 2.0, 2.0))), n, FinalizeModel::DONT);
   GTEST_ASSERT_EQ(ret, BVH_OK);
-  EXPECT_GT(model.num_vertices, num_vertices);
-  EXPECT_GT(model.num_tris, num_tris); 
-  EXPECT_EQ(model.build_state, BVH_BUILD_STATE_BEGUN);
+  EXPECT_GT(model.getNumVertices(), num_vertices);
+  EXPECT_GT(model.getNumTris(), num_tris); 
+  EXPECT_EQ(model.getBuildState(), BVH_BUILD_STATE_BEGUN);
 }
 
 // Specialization for boxes
@@ -136,16 +136,16 @@ void checkAddToUnfinalizedModel(BVHModel<BV>& model, const Box<typename BV::S>& 
   int ret;
 
   // Make sure we are given a model that is already begun
-  GTEST_ASSERT_EQ(model.build_state, BVH_BUILD_STATE_BEGUN);
-  uint8_t num_vertices = model.num_vertices;
-  uint8_t num_tris = model.num_tris;
+  GTEST_ASSERT_EQ(model.getBuildState(), BVH_BUILD_STATE_BEGUN);
+  uint8_t num_vertices = model.getNumVertices();
+  uint8_t num_tris = model.getNumTris();
 
   // Add the shape to the model and count vertices and triangles to make sure it has been created
   ret = generateBVHModel(model, shape, Transform3<S>(Translation3<S>(Vector3<S>(2.0, 2.0, 2.0))), FinalizeModel::DONT);
   GTEST_ASSERT_EQ(ret, BVH_OK);
-  EXPECT_EQ(model.num_vertices, num_vertices + 8);
-  EXPECT_EQ(model.num_tris, num_tris + 12); 
-  EXPECT_EQ(model.build_state, BVH_BUILD_STATE_BEGUN);
+  EXPECT_EQ(model.getNumVertices(), num_vertices + 8);
+  EXPECT_EQ(model.getNumTris(), num_tris + 12); 
+  EXPECT_EQ(model.getBuildState(), BVH_BUILD_STATE_BEGUN);
 }
 
 /**
@@ -162,16 +162,16 @@ void checkAddAndFinalizeModel(BVHModel<BV>& model, const ShapeType& shape){
   int ret;
 
   // Make sure we are given a model that is already begun
-  GTEST_ASSERT_EQ(model.build_state, BVH_BUILD_STATE_BEGUN);
-  uint8_t num_vertices = model.num_vertices;
-  uint8_t num_tris = model.num_tris;
+  GTEST_ASSERT_EQ(model.getBuildState(), BVH_BUILD_STATE_BEGUN);
+  uint8_t num_vertices = model.getNumVertices();
+  uint8_t num_tris = model.getNumTris();
 
   // Add another instance of the shape and make sure it was added to the model by counting vertices and tris
   ret = generateBVHModel(model, shape, Transform3<S>(Translation3<S>(Vector3<S>(2.0, 2.0, 2.0))), n, FinalizeModel::DO);
   GTEST_ASSERT_EQ(ret, BVH_OK);
-  EXPECT_GT(model.num_vertices, num_vertices);
-  EXPECT_GT(model.num_tris, num_tris);
-  EXPECT_EQ(model.build_state, BVH_BUILD_STATE_PROCESSED);
+  EXPECT_GT(model.getNumVertices(), num_vertices);
+  EXPECT_GT(model.getNumTris(), num_tris);
+  EXPECT_EQ(model.getBuildState(), BVH_BUILD_STATE_PROCESSED);
 }
 
 // Specialization for boxes
@@ -181,16 +181,16 @@ void checkAddAndFinalizeModel(BVHModel<BV>& model, const Box<typename BV::S>& sh
   int ret;
 
   // Make sure we are given a model that is already begun
-  GTEST_ASSERT_EQ(model.build_state, BVH_BUILD_STATE_BEGUN);
-  uint8_t num_vertices = model.num_vertices;
-  uint8_t num_tris = model.num_tris;
+  GTEST_ASSERT_EQ(model.getBuildState(), BVH_BUILD_STATE_BEGUN);
+  uint8_t num_vertices = model.getNumVertices();
+  uint8_t num_tris = model.getNumTris();
 
   // Add another instance of the shape and make sure it was added to the model by counting vertices and tris
   ret = generateBVHModel(model, shape, Transform3<S>(Translation3<S>(Vector3<S>(3.0, 3.0, 3.0))), FinalizeModel::DO);
   GTEST_ASSERT_EQ(ret, BVH_OK);
-  EXPECT_EQ(model.num_vertices, num_vertices + 8);
-  EXPECT_EQ(model.num_tris, num_tris + 12);
-  EXPECT_EQ(model.build_state, BVH_BUILD_STATE_PROCESSED);
+  EXPECT_EQ(model.getNumVertices(), num_vertices + 8);
+  EXPECT_EQ(model.getNumTris(), num_tris + 12);
+  EXPECT_EQ(model.getBuildState(), BVH_BUILD_STATE_PROCESSED);
 }
 
 
@@ -204,7 +204,7 @@ void checkAddToFinalizedModel(BVHModel<BV>& model, const ShapeType& shape)
   using S = typename BV::S;
   const uint8_t n = 32; 
 
-  GTEST_ASSERT_EQ(model.build_state, BVH_BUILD_STATE_PROCESSED);
+  GTEST_ASSERT_EQ(model.getBuildState(), BVH_BUILD_STATE_PROCESSED);
   auto ret = generateBVHModel(model, shape, Transform3<S>::Identity(), n, FinalizeModel::DONT);
   EXPECT_EQ(ret, BVH_ERR_BUILD_OUT_OF_SEQUENCE);
 }
@@ -215,7 +215,7 @@ void checkAddToFinalizedModel(BVHModel<BV>& model, const Box<typename BV::S>& sh
 {
   using S = typename BV::S;
 
-  GTEST_ASSERT_EQ(model.build_state, BVH_BUILD_STATE_PROCESSED);
+  GTEST_ASSERT_EQ(model.getBuildState(), BVH_BUILD_STATE_PROCESSED);
   auto ret = generateBVHModel(model, shape, Transform3<S>::Identity(), FinalizeModel::DONT);
   EXPECT_EQ(ret, BVH_ERR_BUILD_OUT_OF_SEQUENCE);
 }

@@ -198,9 +198,9 @@ std::size_t OcTreeBVHCollide(
     Transform3<S> box_tf;
     constructBox(obj2->getBV(0).bv, tf2, box, box_tf); // compute the box for BVH's root node
 
-    box.cost_density = obj2->cost_density;
-    box.threshold_occupied = obj2->threshold_occupied;
-    box.threshold_free = obj2->threshold_free;
+    box.setCostDensity(obj2->getCostDensity());
+    box.setThresholdOccupied(obj2->getThresholdOccupied());
+    box.setThresholdFree(obj2->getThresholdFree());
 
     CollisionRequest<S> only_cost_request(result.numContacts(), false, request.num_max_cost_sources, true, false); // additional cost request, no contacts
     OcTreeShapeCollide<Box<S>, NarrowPhaseSolver>(o1, tf1, &box, box_tf, nsolver, only_cost_request, result);
@@ -251,9 +251,9 @@ std::size_t BVHOcTreeCollide(
     Transform3<S> box_tf;
     constructBox(obj1->getBV(0).bv, tf1, box, box_tf);
 
-    box.cost_density = obj1->cost_density;
-    box.threshold_occupied = obj1->threshold_occupied;
-    box.threshold_free = obj1->threshold_free;
+    box.setCostDensity(obj1->getCostDensity());
+    box.setThresholdOccupied(obj1->getThresholdOccupied());
+    box.setThresholdFree(obj1->getThresholdFree());
 
     CollisionRequest<S> only_cost_request(result.numContacts(), false, request.num_max_cost_sources, true, false);
     ShapeOcTreeCollide<Box<S>, NarrowPhaseSolver>(&box, box_tf, o2, tf2, nsolver, only_cost_request, result);
@@ -347,9 +347,9 @@ struct BVHShapeCollider
       Transform3<S> box_tf;
       constructBox(obj1->getBV(0).bv, tf1, box, box_tf);
 
-      box.cost_density = obj1->cost_density;
-      box.threshold_occupied = obj1->threshold_occupied;
-      box.threshold_free = obj1->threshold_free;
+      box.setCostDensity(obj1->getCostDensity());
+      box.setThresholdOccupied(obj1->getThresholdOccupied());
+      box.setThresholdFree(obj1->getThresholdFree());
 
       CollisionRequest<S> only_cost_request(result.numContacts(), false, request.num_max_cost_sources, true, false);
       ShapeShapeCollide<Box<S>, Shape>(&box, box_tf, o2, tf2, nsolver, only_cost_request, result);
@@ -404,9 +404,9 @@ std::size_t orientedBVHShapeCollide(
     Transform3<S> box_tf;
     constructBox(obj1->getBV(0).bv, tf1, box, box_tf);
 
-    box.cost_density = obj1->cost_density;
-    box.threshold_occupied = obj1->threshold_occupied;
-    box.threshold_free = obj1->threshold_free;
+    box.setCostDensity(obj1->getCostDensity());
+    box.setThresholdOccupied(obj1->getThresholdOccupied());
+    box.setThresholdFree(obj1->getThresholdFree());
 
     CollisionRequest<S> only_cost_request(result.numContacts(), false, request.num_max_cost_sources, true, false);
     ShapeShapeCollide<Box<S>, Shape>(&box, box_tf, o2, tf2, nsolver, only_cost_request, result);

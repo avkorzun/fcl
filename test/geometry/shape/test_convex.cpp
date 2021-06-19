@@ -298,10 +298,10 @@ void testAABBComputation(const Shape<S>& model, const Transform3<S>& X_WS) {
   convex.computeLocalAABB();
 
   typename constants<S>::Real eps = constants<S>::eps();
-  EXPECT_NEAR(shape.aabb_radius(), convex.aabb_radius, eps);
-  EXPECT_TRUE(CompareMatrices(shape.aabb_center(), convex.aabb_center, eps));
-  EXPECT_TRUE(CompareMatrices(shape.min_point(), convex.aabb_local.min_, eps));
-  EXPECT_TRUE(CompareMatrices(shape.max_point(), convex.aabb_local.max_, eps));
+  EXPECT_NEAR(shape.aabb_radius(), convex.getAABBRadius(), eps);
+  EXPECT_TRUE(CompareMatrices(shape.aabb_center(), convex.getLocalAABBCenter(), eps));
+  EXPECT_TRUE(CompareMatrices(shape.min_point(), convex.getLocalAABB().min_, eps));
+  EXPECT_TRUE(CompareMatrices(shape.max_point(), convex.getLocalAABB().max_, eps));
 }
 
 template <template <typename> class Shape, typename S>

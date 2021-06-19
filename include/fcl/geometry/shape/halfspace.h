@@ -69,6 +69,12 @@ public:
   Halfspace(S a, S b, S c, S d_);
 
   Halfspace();
+    
+  /// @brief Halfspace normal
+  const Vector3<S> &getNormal() const;
+  
+  /// @brief Halfspace offset
+  S getOffset() const;
 
   S signedDistance(const Vector3<S>& p) const;
 
@@ -79,17 +85,11 @@ public:
 
   /// @brief Get node type: a half space
   NODE_TYPE getNodeType() const override;
-  
-  /// @brief Planed normal
-  Vector3<S> n;
-  
-  /// @brief Planed offset
-  S d;
 
   friend
   std::ostream& operator<<(std::ostream& out, const Halfspace& halfspace) {
-    out << "Halfspace(n: " << halfspace.n.transpose() << ", d: "
-        << halfspace.d << ")";
+    out << "Halfspace(n: " << halfspace.getNormal().transpose() << ", d: "
+        << halfspace.getOffset() << ")";
     return out;
   }
 
@@ -97,6 +97,13 @@ protected:
 
   /// @brief Turn non-unit normal into unit
   void unitNormalTest();
+private:
+  
+  /// @brief Halfspace normal
+  Vector3<S> n;
+  
+  /// @brief Halfspace offset
+  S d;
 };
 
 using Halfspacef = Halfspace<float>;

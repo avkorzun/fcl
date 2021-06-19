@@ -194,13 +194,13 @@ typename BV::S continuousCollideBVHPolynomial(
   // ugly, but lets do it now.
   BVHModel<BV>* o1 = const_cast<BVHModel<BV>*>(o1__);
   BVHModel<BV>* o2 = const_cast<BVHModel<BV>*>(o2__);
-  std::vector<Vector3<S>> new_v1(o1->num_vertices);
-  std::vector<Vector3<S>> new_v2(o2->num_vertices);
+  std::vector<Vector3<S>> new_v1(o1->getNumVertices());
+  std::vector<Vector3<S>> new_v2(o2->getNumVertices());
 
   for(std::size_t i = 0; i < new_v1.size(); ++i)
-    new_v1[i] = o1->vertices[i] + motion1->getVelocity();
+    new_v1[i] = o1->getVertices()[i] + motion1->getVelocity();
   for(std::size_t i = 0; i < new_v2.size(); ++i)
-    new_v2[i] = o2->vertices[i] + motion2->getVelocity();
+    new_v2[i] = o2->getVertices()[i] + motion2->getVelocity();
 
   o1->beginUpdateModel();
   o1->updateSubModel(new_v1);

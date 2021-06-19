@@ -153,10 +153,10 @@ bool initialize(
 
   if(!tf1.matrix().isIdentity())
   {
-    std::vector<Vector3<S>> vertices_transformed(model1.num_vertices);
-    for(int i = 0; i < model1.num_vertices; ++i)
+    std::vector<Vector3<S>> vertices_transformed(model1.getNumVertices());
+    for(int i = 0; i < model1.getNumVertices(); ++i)
     {
-      Vector3<S>& p = model1.vertices[i];
+      const Vector3<S>& p = model1.getVertices()[i];
       Vector3<S> new_v = tf1 * p;
       vertices_transformed[i] = new_v;
     }
@@ -176,13 +176,13 @@ bool initialize(
 
   computeBV(model2, tf2, node.model2_bv);
 
-  node.vertices = model1.vertices;
-  node.tri_indices = model1.tri_indices;
+  node.vertices = model1.getVertices();
+  node.tri_indices = model1.getTriIndices();
 
   node.request = request;
   node.result = &result;
 
-  node.cost_density = model1.cost_density * model2.cost_density;
+  node.cost_density = model1.getCostDensity() * model2.getCostDensity();
 
   return true;
 }
@@ -192,7 +192,7 @@ template <typename BV, typename Shape, typename NarrowPhaseSolver>
 void meshShapeCollisionOrientedNodeLeafTesting(
     int b1, int b2,
     const BVHModel<BV>* model1, const Shape& model2,
-    Vector3<typename BV::S>* vertices, Triangle* tri_indices,
+    const Vector3<typename BV::S>* vertices, const Triangle* tri_indices,
     const Transform3<typename BV::S>& tf1,
     const Transform3<typename BV::S>& tf2,
     const NarrowPhaseSolver* nsolver,
@@ -394,13 +394,13 @@ bool setupMeshShapeCollisionOrientedNode(
 
   computeBV(model2, tf2, node.model2_bv);
 
-  node.vertices = model1.vertices;
-  node.tri_indices = model1.tri_indices;
+  node.vertices = model1.getVertices();
+  node.tri_indices = model1.getTriIndices();
 
   node.request = request;
   node.result = &result;
 
-  node.cost_density = model1.cost_density * model2.cost_density;
+  node.cost_density = model1.getCostDensity() * model2.getCostDensity();
 
   return true;
 }

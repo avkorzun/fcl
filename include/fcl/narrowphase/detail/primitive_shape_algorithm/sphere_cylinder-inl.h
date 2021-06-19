@@ -115,7 +115,7 @@ FCL_EXPORT bool sphereCylinderIntersect(
     const Sphere<S>& sphere, const Transform3<S>& X_FS,
     const Cylinder<S>& cylinder, const Transform3<S>& X_FC,
     std::vector<ContactPoint<S>>* contacts) {
-  const S& r_s = sphere.radius;
+  const S& r_s = sphere.getRadius();
   // Find the sphere center So (abbreviated as S) in the cylinder's frame.
   const Transform3<S> X_CS = X_FC.inverse() * X_FS;
   const Vector3<S> p_CS = X_CS.translation();
@@ -123,7 +123,7 @@ FCL_EXPORT bool sphereCylinderIntersect(
   // Find N, the nearest point *inside* the cylinder to the sphere center S
   // (measure and expressed in frame C).
   Vector3<S> p_CN;
-  bool S_is_outside = nearestPointInCylinder(cylinder.lz, cylinder.radius, p_CS,
+  bool S_is_outside = nearestPointInCylinder(cylinder.getLength(), cylinder.getRadius(), p_CS,
                                              &p_CN);
 
   // Compute the position vector from the sphere center S to the nearest point N
@@ -172,7 +172,7 @@ FCL_EXPORT bool sphereCylinderIntersect(
     } else {
       // The center is inside. It's either nearer the barrel or the end face
       // (with preference for the end face).
-      const S& h = cylinder.lz;
+      const S& h = cylinder.getLength();
       const S face_distance = p_CS(2) >= 0 ? h / 2 - p_CS(2) : p_CS(2) + h / 2;
       // For the barrel to be picked over the face, it must be more than
       // epsilon closer to the sphere center.
@@ -181,7 +181,7 @@ FCL_EXPORT bool sphereCylinderIntersect(
       // the z = 0 plane.
       const Vector2<S> n_SB_xy = Vector2<S>(p_CS(0), p_CS(1));
       const S d_CS_xy = n_SB_xy.norm();
-      const S barrel_distance = cylinder.radius - d_CS_xy;
+      const S barrel_distance = cylinder.getRadius() - d_CS_xy;
       // If the center is near the Voronoi boundary between the near face and
       // the barrel, then this test would be affected by the precision loss
       // inherent in computing p_CS. If we did a *strict* comparison, then
@@ -200,7 +200,7 @@ FCL_EXPORT bool sphereCylinderIntersect(
           // documentation, assume we have penetration coming in from the +x
           // direction.
           n_SC_C = -Vector3<S>::UnitX();
-          depth = r_s + cylinder.radius;
+          depth = r_s + cylinder.getRadius();
           p_CP = p_CS + n_SC_C * ((r_s - barrel_distance) / 2);
         }
       } else {
@@ -231,12 +231,12 @@ FCL_EXPORT bool sphereCylinderDistance(const Sphere<S>& sphere,
   // Find the sphere center S in the cylinder's frame.
   const Transform3<S> X_CS = X_FC.inverse() * X_FS;
   const Vector3<S> p_CS = X_CS.translation();
-  const S r_s = sphere.radius;
+  const S r_s = sphere.getRadius();
 
   // Find N, the nearest point *inside* the cylinder to the sphere center S
   // (measured and expressed in frame C).
   Vector3<S> p_CN;
-  bool S_is_outside = nearestPointInCylinder(cylinder.lz, cylinder.radius, p_CS,
+  bool S_is_outside = nearestPointInCylinder(cylinder.getLength(), cylinder.getRadius(), p_CS,
                                              &p_CN);
 
   if (S_is_outside) {

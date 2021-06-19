@@ -63,16 +63,16 @@ template <typename S>
 void testLocalAABBComputation(Capsule<S>& shape, S tol) {
   shape.computeLocalAABB();
 
-  S r = shape.radius;
-  S l = shape.lz;
-  EXPECT_NEAR(shape.aabb_radius, Vector3<S>(r, r, 0.5 * l + r).norm(), tol);
-  EXPECT_TRUE(CompareMatrices(shape.aabb_center, Vector3<S>(0, 0, 0), tol));
+  S r = shape.getRadius();
+  S l = shape.getLength();
+  EXPECT_NEAR(shape.getAABBRadius(), Vector3<S>(r, r, 0.5 * l + r).norm(), tol);
+  EXPECT_TRUE(CompareMatrices(shape.getLocalAABBCenter(), Vector3<S>(0, 0, 0), tol));
 }
 
 template <typename S>
 void testVolumeComputation(const Capsule<S>& shape, S tol) {
-  S r = shape.radius;
-  S l = shape.lz;
+  S r = shape.getRadius();
+  S l = shape.getLength();
 
   S pi = constants<S>::pi();
 
@@ -85,8 +85,8 @@ void testVolumeComputation(const Capsule<S>& shape, S tol) {
 
 template <typename S>
 void testMomentOfInertiaComputation(const Capsule<S>& shape, S tol) {
-  S r = shape.radius;
-  S l = shape.lz;
+  S r = shape.getRadius();
+  S l = shape.getLength();
 
   S pi = constants<S>::pi();
 

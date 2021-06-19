@@ -158,14 +158,14 @@ bool sphereHalfspaceIntersect(const Sphere<S>& s1, const Transform3<S>& tf1,
 {
   const Halfspace<S> new_s2 = transform(s2, tf2);
   const Vector3<S>& center = tf1.translation();
-  const S depth = s1.radius - new_s2.signedDistance(center);
+  const S depth = s1.getRadius() - new_s2.signedDistance(center);
 
   if (depth >= 0)
   {
     if (contacts)
     {
-      const Vector3<S> normal = -new_s2.n; // pointing from s1 to s2
-      const Vector3<S> point = center - new_s2.n * s1.radius + new_s2.n * (depth * 0.5);
+      const Vector3<S> normal = -new_s2.getNormal(); // pointing from s1 to s2
+      const Vector3<S> point = center - new_s2.getNormal() * s1.getRadius() + new_s2.getNormal() * (depth * 0.5);
       const S penetration_depth = depth;
 
       contacts->emplace_back(normal, point, penetration_depth);
@@ -192,21 +192,21 @@ bool ellipsoidHalfspaceIntersect(const Ellipsoid<S>& s1, const Transform3<S>& tf
 
   // Compute distance between the ellipsoid's center and a contact plane, whose
   // normal is equal to the halfspace's normal.
-  const Vector3<S> normal2(std::pow(new_s2.n[0], 2), std::pow(new_s2.n[1], 2), std::pow(new_s2.n[2], 2));
-  const Vector3<S> radii2(std::pow(s1.radii[0], 2), std::pow(s1.radii[1], 2), std::pow(s1.radii[2], 2));
+  const Vector3<S> normal2(std::pow(new_s2.getNormal()[0], 2), std::pow(new_s2.getNormal()[1], 2), std::pow(new_s2.getNormal()[2], 2));
+  const Vector3<S> radii2(std::pow(s1.getRadii()[0], 2), std::pow(s1.getRadii()[1], 2), std::pow(s1.getRadii()[2], 2));
   const S center_to_contact_plane = std::sqrt(normal2.dot(radii2));
 
   // Depth is the distance between the contact plane and the halfspace.
-  const S depth = center_to_contact_plane + new_s2.d;
+  const S depth = center_to_contact_plane + new_s2.getOffset();
 
   if (depth >= 0)
   {
     if (contacts)
     {
       // Transform the results to the world coordinates.
-      const Vector3<S> normal = tf1.linear() * -new_s2.n; // pointing from s1 to s2
-      const Vector3<S> support_vector = (1.0/center_to_contact_plane) * Vector3<S>(radii2[0]*new_s2.n[0], radii2[1]*new_s2.n[1], radii2[2]*new_s2.n[2]);
-      const Vector3<S> point_in_halfspace_coords = support_vector * (0.5 * depth / new_s2.n.dot(support_vector) - 1.0);
+      const Vector3<S> normal = tf1.linear() * -new_s2.getNormal(); // pointing from s1 to s2
+      const Vector3<S> support_vector = (1.0/center_to_contact_plane) * Vector3<S>(radii2[0]*new_s2.getNormal()[0], radii2[1]*new_s2.getNormal()[1], radii2[2]*new_s2.getNormal()[2]);
+      const Vector3<S> point_in_halfspace_coords = support_vector * (0.5 * depth / new_s2.getNormal().dot(support_vector) - 1.0);
       const Vector3<S> point = tf1 * point_in_halfspace_coords; // roughly speaking, a middle point of the intersecting volume
       const S penetration_depth = depth;
 
@@ -231,8 +231,8 @@ bool boxHalfspaceIntersect(const Box<S>& s1, const Transform3<S>& tf1,
   const Matrix3<S>& R = tf1.linear();
   const Vector3<S>& T = tf1.translation();
 
-  Vector3<S> Q = R.transpose() * new_s2.n;
-  Vector3<S> A(Q[0] * s1.side[0], Q[1] * s1.side[1], Q[2] * s1.side[2]);
+  Vector3<S> Q = R.transpose() * new_s2.getNormal();
+  Vector3<S> A(Q[0] * s1.getSide()[0], Q[1] * s1.getSide()[1], Q[2] * s1.getSide()[2]);
   Vector3<S> B = A.cwiseAbs();
 
   S depth = 0.5 * (B[0] + B[1] + B[2]) - new_s2.signedDistance(T);
@@ -256,8 +256,8 @@ bool boxHalfspaceIntersect(const Box<S>& s1, const Transform3<S>& tf1,
     const Matrix3<S>& R = tf1.linear();
     const Vector3<S>& T = tf1.translation();
 
-    Vector3<S> Q = R.transpose() * new_s2.n;
-    Vector3<S> A(Q[0] * s1.side[0], Q[1] * s1.side[1], Q[2] * s1.side[2]);
+    Vector3<S> Q = R.transpose() * new_s2.getNormal();
+    Vector3<S> A(Q[0] * s1.getSide()[0], Q[1] * s1.getSide()[1], Q[2] * s1.getSide()[2]);
     Vector3<S> B = A.cwiseAbs();
 
     S depth = 0.5 * (B[0] + B[1] + B[2]) - new_s2.signedDistance(T);
@@ -275,32 +275,32 @@ bool boxHalfspaceIntersect(const Box<S>& s1, const Transform3<S>& tf1,
     if(std::abs(Q[0] - 1) < halfspaceIntersectTolerance<S>() || std::abs(Q[0] + 1) < halfspaceIntersectTolerance<S>())
     {
       sign = (A[0] > 0) ? -1 : 1;
-      p += axis[0] * (0.5 * s1.side[0] * sign);
+      p += axis[0] * (0.5 * s1.getSide()[0] * sign);
     }
     else if(std::abs(Q[1] - 1) < halfspaceIntersectTolerance<S>() || std::abs(Q[1] + 1) < halfspaceIntersectTolerance<S>())
     {
       sign = (A[1] > 0) ? -1 : 1;
-      p += axis[1] * (0.5 * s1.side[1] * sign);
+      p += axis[1] * (0.5 * s1.getSide()[1] * sign);
     }
     else if(std::abs(Q[2] - 1) < halfspaceIntersectTolerance<S>() || std::abs(Q[2] + 1) < halfspaceIntersectTolerance<S>())
     {
       sign = (A[2] > 0) ? -1 : 1;
-      p += axis[2] * (0.5 * s1.side[2] * sign);
+      p += axis[2] * (0.5 * s1.getSide()[2] * sign);
     }
     else
     {
       for(std::size_t i = 0; i < 3; ++i)
       {
         sign = (A[i] > 0) ? -1 : 1;
-        p += axis[i] * (0.5 * s1.side[i] * sign);
+        p += axis[i] * (0.5 * s1.getSide()[i] * sign);
       }
     }
 
     /// compute the contact point from the deepest point
     if (contacts)
     {
-      const Vector3<S> normal = -new_s2.n;
-      const Vector3<S> point = p + new_s2.n * (depth * 0.5);
+      const Vector3<S> normal = -new_s2.getNormal();
+      const Vector3<S> point = p + new_s2.getNormal() * (depth * 0.5);
       const S penetration_depth = depth;
 
       contacts->emplace_back(normal, point, penetration_depth);
@@ -323,17 +323,17 @@ bool capsuleHalfspaceIntersect(const Capsule<S>& s1, const Transform3<S>& tf1,
 
   Vector3<S> dir_z = R.col(2);
 
-  S cosa = dir_z.dot(new_s2.n);
+  S cosa = dir_z.dot(new_s2.getNormal());
   if(std::abs(cosa) < halfspaceIntersectTolerance<S>())
   {
     S signed_dist = new_s2.signedDistance(T);
-    S depth = s1.radius - signed_dist;
+    S depth = s1.getRadius() - signed_dist;
     if(depth < 0) return false;
 
     if (contacts)
     {
-      const Vector3<S> normal = -new_s2.n;
-      const Vector3<S> point = T + new_s2.n * (0.5 * depth - s1.radius);
+      const Vector3<S> normal = -new_s2.getNormal();
+      const Vector3<S> point = T + new_s2.getNormal() * (0.5 * depth - s1.getRadius());
       const S penetration_depth = depth;
 
       contacts->emplace_back(normal, point, penetration_depth);
@@ -344,16 +344,16 @@ bool capsuleHalfspaceIntersect(const Capsule<S>& s1, const Transform3<S>& tf1,
   else
   {
     int sign = (cosa > 0) ? -1 : 1;
-    Vector3<S> p = T + dir_z * (s1.lz * 0.5 * sign);
+    Vector3<S> p = T + dir_z * (s1.getLength() * 0.5 * sign);
 
     S signed_dist = new_s2.signedDistance(p);
-    S depth = s1.radius - signed_dist;
+    S depth = s1.getRadius() - signed_dist;
     if(depth < 0) return false;
 
     if (contacts)
     {
-      const Vector3<S> normal = -new_s2.n;
-      const Vector3<S> point = p - new_s2.n * s1.radius + new_s2.n * (0.5 * depth);  // deepest point
+      const Vector3<S> normal = -new_s2.getNormal();
+      const Vector3<S> point = p - new_s2.getNormal() * s1.getRadius() + new_s2.getNormal() * (0.5 * depth);  // deepest point
       const S penetration_depth = depth;
 
       contacts->emplace_back(normal, point, penetration_depth);
@@ -375,18 +375,18 @@ bool cylinderHalfspaceIntersect(const Cylinder<S>& s1, const Transform3<S>& tf1,
   const Vector3<S>& T = tf1.translation();
 
   Vector3<S> dir_z = R.col(2);
-  S cosa = dir_z.dot(new_s2.n);
+  S cosa = dir_z.dot(new_s2.getNormal());
 
   if(std::abs(cosa) < halfspaceIntersectTolerance<S>())
   {
     S signed_dist = new_s2.signedDistance(T);
-    S depth = s1.radius - signed_dist;
+    S depth = s1.getRadius() - signed_dist;
     if(depth < 0) return false;
 
     if (contacts)
     {
-      const Vector3<S> normal = -new_s2.n;
-      const Vector3<S> point = T + new_s2.n * (0.5 * depth - s1.radius);
+      const Vector3<S> normal = -new_s2.getNormal();
+      const Vector3<S> point = T + new_s2.getNormal() * (0.5 * depth - s1.getRadius());
       const S penetration_depth = depth;
 
       contacts->emplace_back(normal, point, penetration_depth);
@@ -396,27 +396,27 @@ bool cylinderHalfspaceIntersect(const Cylinder<S>& s1, const Transform3<S>& tf1,
   }
   else
   {
-    Vector3<S> C = dir_z * cosa - new_s2.n;
+    Vector3<S> C = dir_z * cosa - new_s2.getNormal();
     if(std::abs(cosa + 1) < halfspaceIntersectTolerance<S>() || std::abs(cosa - 1) < halfspaceIntersectTolerance<S>())
       C = Vector3<S>(0, 0, 0);
     else
     {
       S s = C.norm();
-      s = s1.radius / s;
+      s = s1.getRadius() / s;
       C *= s;
     }
 
     int sign = (cosa > 0) ? -1 : 1;
     // deepest point
-    Vector3<S> p = T + dir_z * (s1.lz * 0.5 * sign) + C;
+    Vector3<S> p = T + dir_z * (s1.getLength() * 0.5 * sign) + C;
     S depth = -new_s2.signedDistance(p);
     if(depth < 0) return false;
     else
     {
       if (contacts)
       {
-        const Vector3<S> normal = -new_s2.n;
-        const Vector3<S> point = p + new_s2.n * (0.5 * depth);
+        const Vector3<S> normal = -new_s2.getNormal();
+        const Vector3<S> point = p + new_s2.getNormal() * (0.5 * depth);
         const S penetration_depth = depth;
 
         contacts->emplace_back(normal, point, penetration_depth);
@@ -439,19 +439,19 @@ bool coneHalfspaceIntersect(const Cone<S>& s1, const Transform3<S>& tf1,
   const Vector3<S>& T = tf1.translation();
 
   Vector3<S> dir_z = R.col(2);
-  S cosa = dir_z.dot(new_s2.n);
+  S cosa = dir_z.dot(new_s2.getNormal());
 
   if(cosa < halfspaceIntersectTolerance<S>())
   {
     S signed_dist = new_s2.signedDistance(T);
-    S depth = s1.radius - signed_dist;
+    S depth = s1.getRadius() - signed_dist;
     if(depth < 0) return false;
     else
     {
       if (contacts)
       {
-        const Vector3<S> normal = -new_s2.n;
-        const Vector3<S> point = T - dir_z * (s1.lz * 0.5) + new_s2.n * (0.5 * depth - s1.radius);
+        const Vector3<S> normal = -new_s2.getNormal();
+        const Vector3<S> point = T - dir_z * (s1.getLength() * 0.5) + new_s2.getNormal() * (0.5 * depth - s1.getRadius());
         const S penetration_depth = depth;
 
         contacts->emplace_back(normal, point, penetration_depth);
@@ -462,18 +462,18 @@ bool coneHalfspaceIntersect(const Cone<S>& s1, const Transform3<S>& tf1,
   }
   else
   {
-    Vector3<S> C = dir_z * cosa - new_s2.n;
+    Vector3<S> C = dir_z * cosa - new_s2.getNormal();
     if(std::abs(cosa + 1) < halfspaceIntersectTolerance<S>() || std::abs(cosa - 1) < halfspaceIntersectTolerance<S>())
       C = Vector3<S>(0, 0, 0);
     else
     {
       S s = C.norm();
-      s = s1.radius / s;
+      s = s1.getRadius() / s;
       C *= s;
     }
 
-    Vector3<S> p1 = T + dir_z * (0.5 * s1.lz);
-    Vector3<S> p2 = T - dir_z * (0.5 * s1.lz) + C;
+    Vector3<S> p1 = T + dir_z * (0.5 * s1.getLength());
+    Vector3<S> p2 = T - dir_z * (0.5 * s1.getLength()) + C;
 
     S d1 = new_s2.signedDistance(p1);
     S d2 = new_s2.signedDistance(p2);
@@ -484,8 +484,8 @@ bool coneHalfspaceIntersect(const Cone<S>& s1, const Transform3<S>& tf1,
       if (contacts)
       {
         const S penetration_depth = -std::min(d1, d2);
-        const Vector3<S> normal = -new_s2.n;
-        const Vector3<S> point = ((d1 < d2) ? p1 : p2) + new_s2.n * (0.5 * penetration_depth);
+        const Vector3<S> normal = -new_s2.getNormal();
+        const Vector3<S> point = ((d1 < d2) ? p1 : p2) + new_s2.getNormal() * (0.5 * penetration_depth);
 
         contacts->emplace_back(normal, point, penetration_depth);
       }
@@ -528,13 +528,13 @@ bool convexHalfspaceIntersect(const Convex<S>& s1, const Transform3<S>& tf1,
     // Note: this value for contact_point only works because depth is really
     // signed distance, so negating the normal cancels the negation of the
     // "penetration depth".
-    if(contact_points) *contact_points = v - new_s2.n * (0.5 * depth);
+    if(contact_points) *contact_points = v - new_s2.getNormal() * (0.5 * depth);
     // TODO(SeanCurtis-TRI): This appears to have the wrong sign for depth.
     //  We've actually computed *signed distance* which is -depth.
     if(penetration_depth) *penetration_depth = depth;
     // Note: This points *into* the half space. It is not clear this matches
     // any documented convention.
-    if(normal) *normal = -new_s2.n;
+    if(normal) *normal = -new_s2.getNormal();
     return true;
   }
   else
@@ -557,7 +557,7 @@ bool convexHalfspaceIntersect(const Convex<S>& convex_C,
   //  (necessary to make GJK run faster with convex), this could benefit by
   //  simply asking for the support vector in the negative normal direction.
   //  That would also make computing normal_C cheaper; it could just be the
-  //  product: X_FC.linear().transpose() * X_FH.linear() * half_space_H.n.
+  //  product: X_FC.linear().transpose() * X_FH.linear() * half_space_H.getNormal().
   for (const auto& p_CV : convex_C.getVertices()) {
     const S signed_distance = half_space_C.signedDistance(p_CV);
     if (signed_distance < min_signed_distance) {
@@ -570,7 +570,7 @@ bool convexHalfspaceIntersect(const Convex<S>& convex_C,
   const bool intersecting = min_signed_distance <= 0;
 
   if (intersecting && contacts) {
-    const Vector3<S> normal_F = X_FH.linear() * half_space_H.n;
+    const Vector3<S> normal_F = X_FH.linear() * half_space_H.getNormal();
     const Vector3<S> p_FV = X_FC * p_CV_deepest;
     // NOTE: penetration depth is defined as the negative of signed distance.
     // So, the depth reported here will always be non-negative.
@@ -611,8 +611,8 @@ bool halfspaceTriangleIntersect(const Halfspace<S>& s1, const Transform3<S>& tf1
   if(depth <= 0)
   {
     if(penetration_depth) *penetration_depth = -depth;
-    if(normal) *normal = new_s1.n;
-    if(contact_points) *contact_points = v - new_s1.n * (0.5 * depth);
+    if(normal) *normal = new_s1.getNormal();
+    if(contact_points) *contact_points = v - new_s1.getNormal() * (0.5 * depth);
     return true;
   }
   else
@@ -633,15 +633,15 @@ bool planeHalfspaceIntersect(const Plane<S>& s1, const Transform3<S>& tf1,
 
   ret = 0;
 
-  Vector3<S> dir = (new_s1.n).cross(new_s2.n);
+  Vector3<S> dir = (new_s1.getNormal()).cross(new_s2.getNormal());
   S dir_norm = dir.squaredNorm();
   if(dir_norm < std::numeric_limits<S>::epsilon()) // parallel
   {
-    if((new_s1.n).dot(new_s2.n) > 0)
+    if((new_s1.getNormal()).dot(new_s2.getNormal()) > 0)
     {
-      if(new_s1.d < new_s2.d)
+      if(new_s1.getOffset() < new_s2.getOffset())
       {
-        penetration_depth = new_s2.d - new_s1.d;
+        penetration_depth = new_s2.getOffset() - new_s1.getOffset();
         ret = 1;
         pl = new_s1;
         return true;
@@ -651,11 +651,11 @@ bool planeHalfspaceIntersect(const Plane<S>& s1, const Transform3<S>& tf1,
     }
     else
     {
-      if(new_s1.d + new_s2.d > 0)
+      if(new_s1.getOffset() + new_s2.getOffset() > 0)
         return false;
       else
       {
-        penetration_depth = -(new_s1.d + new_s2.d);
+        penetration_depth = -(new_s1.getOffset() + new_s2.getOffset());
         ret = 2;
         pl = new_s1;
         return true;
@@ -663,7 +663,7 @@ bool planeHalfspaceIntersect(const Plane<S>& s1, const Transform3<S>& tf1,
     }
   }
 
-  Vector3<S> n = new_s2.n * new_s1.d - new_s1.n * new_s2.d;
+  Vector3<S> n = new_s2.getNormal() * new_s1.getOffset() - new_s1.getNormal() * new_s2.getOffset();
   Vector3<S> origin = n.cross(dir);
   origin *= (1.0 / dir_norm);
 
@@ -700,13 +700,13 @@ bool halfspaceIntersect(const Halfspace<S>& s1, const Transform3<S>& tf1,
 
   ret = 0;
 
-  Vector3<S> dir = (new_s1.n).cross(new_s2.n);
+  Vector3<S> dir = (new_s1.getNormal()).cross(new_s2.getNormal());
   S dir_norm = dir.squaredNorm();
   if(dir_norm < std::numeric_limits<S>::epsilon()) // parallel
   {
-    if((new_s1.n).dot(new_s2.n) > 0)
+    if((new_s1.getNormal()).dot(new_s2.getNormal()) > 0)
     {
-      if(new_s1.d < new_s2.d) // s1 is inside s2
+      if(new_s1.getOffset() < new_s2.getOffset()) // s1 is inside s2
       {
         ret = 1;
         penetration_depth = std::numeric_limits<S>::max();
@@ -722,18 +722,18 @@ bool halfspaceIntersect(const Halfspace<S>& s1, const Transform3<S>& tf1,
     }
     else
     {
-      if(new_s1.d + new_s2.d > 0) // not collision
+      if(new_s1.getOffset() + new_s2.getOffset() > 0) // not collision
         return false;
       else // in each other
       {
         ret = 3;
-        penetration_depth = -(new_s1.d + new_s2.d);
+        penetration_depth = -(new_s1.getOffset() + new_s2.getOffset());
         return true;
       }
     }
   }
 
-  Vector3<S> n = new_s2.n * new_s1.d - new_s1.n * new_s2.d;
+  Vector3<S> n = new_s2.getNormal() * new_s1.getOffset() - new_s1.getNormal() * new_s2.getOffset();
   Vector3<S> origin = n.cross(dir);
   origin *= (1.0 / dir_norm);
 

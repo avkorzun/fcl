@@ -67,6 +67,7 @@ OcTree<S>::OcTree(S resolution)
   // default occupancy/free threshold is consistent with default setting from octomap
   occupancy_threshold_log_odds = tree->getOccupancyThresLog();
   free_threshold_log_odds = 0.0;
+  computeLocalAABB();
 }
 
 //==============================================================================
@@ -79,6 +80,7 @@ OcTree<S>::OcTree(const std::shared_ptr<const octomap::OcTree>& tree_)
   // default occupancy/free threshold is consistent with default setting from octomap
   occupancy_threshold_log_odds = tree->getOccupancyThresLog();
   free_threshold_log_odds = 0;
+  computeLocalAABB();
 }
 
 //==============================================================================

@@ -86,6 +86,38 @@ public:
   /// @brief whether the object has some uncertainty
   bool isUncertain() const;
 
+  /// @brief compute center of mass
+  virtual Vector3<S> computeCOM() const;
+
+  /// @brief compute the inertia matrix, related to the origin
+  virtual Matrix3<S> computeMomentofInertia() const;
+
+  /// @brief compute the volume
+  virtual S computeVolume() const;
+
+  /// @brief compute the inertia matrix, related to the com
+  virtual Matrix3<S> computeMomentofInertiaRelatedToCOM() const;
+
+  const Vector3<S> &getLocalAABBCenter() const;
+
+  S getAABBRadius() const;
+
+  const AABB<S> &getLocalAABB() const;
+
+  S getCostDensity() const;
+
+  void setCostDensity(S value);
+
+  S getThresholdOccupied() const;
+
+  void setThresholdOccupied(S value);
+
+  S getThresholdFree() const;
+
+  void setThresholdFree(S value);
+
+protected:
+
   /// @brief AABB center in local coordinate
   Vector3<S> aabb_center;
 
@@ -106,18 +138,6 @@ public:
 
   /// @brief threshold for free (<= is free)
   S threshold_free;
-
-  /// @brief compute center of mass
-  virtual Vector3<S> computeCOM() const;
-
-  /// @brief compute the inertia matrix, related to the origin
-  virtual Matrix3<S> computeMomentofInertia() const;
-
-  /// @brief compute the volume
-  virtual S computeVolume() const;
-
-  /// @brief compute the inertia matrix, related to the com
-  virtual Matrix3<S> computeMomentofInertiaRelatedToCOM() const;
 
 };
 

@@ -126,7 +126,7 @@ FCL_EXPORT
 void getRadiusAndOriginAndRectangleSize(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     const Matrix3<S>& axis,
@@ -141,7 +141,7 @@ FCL_EXPORT
 void getRadiusAndOriginAndRectangleSize(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     Transform3<S>& tf,
@@ -164,7 +164,7 @@ FCL_EXPORT
 S maximumDistance(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     const Vector3<S>& query);
@@ -176,7 +176,7 @@ FCL_EXPORT
 void getExtentAndCenter(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     const Matrix3<S>& axis,
@@ -190,7 +190,7 @@ FCL_EXPORT
 void getExtentAndCenter(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     Transform3<S>& tf,
@@ -204,7 +204,7 @@ FCL_EXPORT
 void getCovariance(
     const Vector3<S>* const ps,
     const Vector3<S>* const ps2,
-    Triangle* ts,
+    const Triangle* ts,
     unsigned int* indices,
     int n,
     Matrix3<S>& M);

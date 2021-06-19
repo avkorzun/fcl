@@ -81,11 +81,11 @@ template <typename S> void NearestPointInBox() {
 
   // Case: query point at origin.
   p_BQ << 0, 0, 0;
-  bool N_is_not_C = nearestPointInBox(box.side, p_BQ, &p_BN);
+  bool N_is_not_C = nearestPointInBox(box.getSide(), p_BQ, &p_BN);
   EXPECT_FALSE(N_is_not_C);
   EXPECT_TRUE(CompareMatrices(p_BN, p_BQ, 0, MatrixCompareType::absolute));
 
-  Vector3<S> half_size = box.side * 0.5;
+  Vector3<S> half_size = box.getSide() * 0.5;
   // Per-octant tests:
   for (S x : {-1, 1}) {
     for (S y : {-1, 1}) {
@@ -93,7 +93,7 @@ template <typename S> void NearestPointInBox() {
         Vector3<S> quadrant{x, y, z};
         // Case: point inside (no clamped values).
         p_BQ = quadrant.cwiseProduct(half_size * 0.5);
-        N_is_not_C = nearestPointInBox(box.side, p_BQ, &p_BN);
+        N_is_not_C = nearestPointInBox(box.getSide(), p_BQ, &p_BN);
         EXPECT_FALSE(N_is_not_C);
         EXPECT_TRUE(
             CompareMatrices(p_BN, p_BQ, 0, MatrixCompareType::absolute));
@@ -104,7 +104,7 @@ template <typename S> void NearestPointInBox() {
           Vector3<S> scale{0.5, 0.5, 0.5};
           scale(axis) = 1.5;
           p_BQ = quadrant.cwiseProduct(half_size.cwiseProduct(scale));
-          N_is_not_C = nearestPointInBox(box.side, p_BQ, &p_BN);
+          N_is_not_C = nearestPointInBox(box.getSide(), p_BQ, &p_BN);
           EXPECT_TRUE(N_is_not_C);
           for (int i : {0, 1, 2}) {
             if (i == axis)
@@ -117,7 +117,7 @@ template <typename S> void NearestPointInBox() {
           scale << 1.5, 1.5, 1.5;
           scale(axis) = 0.5;
           p_BQ = quadrant.cwiseProduct(half_size.cwiseProduct(scale));
-          N_is_not_C = nearestPointInBox(box.side, p_BQ, &p_BN);
+          N_is_not_C = nearestPointInBox(box.getSide(), p_BQ, &p_BN);
           EXPECT_TRUE(N_is_not_C);
           for (int i : {0, 1, 2}) {
             if (i == axis)
@@ -130,7 +130,7 @@ template <typename S> void NearestPointInBox() {
           scale << 0.5, 0.5, 0.5;
           scale(axis) = 1.0;
           p_BQ = quadrant.cwiseProduct(half_size.cwiseProduct(scale));
-          N_is_not_C = nearestPointInBox(box.side, p_BQ, &p_BN);
+          N_is_not_C = nearestPointInBox(box.getSide(), p_BQ, &p_BN);
           EXPECT_FALSE(N_is_not_C);
           EXPECT_TRUE(
               CompareMatrices(p_BN, p_BQ, 0, MatrixCompareType::absolute));
@@ -138,7 +138,7 @@ template <typename S> void NearestPointInBox() {
 
         // Case: external point in Voronoi region of corner (all axes clamped).
         p_BQ = quadrant.cwiseProduct(half_size * 1.5);
-        N_is_not_C = nearestPointInBox(box.side, p_BQ, &p_BN);
+        N_is_not_C = nearestPointInBox(box.getSide(), p_BQ, &p_BN);
         EXPECT_TRUE(N_is_not_C);
         for (int i : {0, 1, 2})
           EXPECT_EQ(p_BN(i), quadrant(i) * half_size(i));

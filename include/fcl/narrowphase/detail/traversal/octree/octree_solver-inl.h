@@ -350,7 +350,7 @@ bool OcTreeSolver<NarrowPhaseSolver>::OcTreeShapeIntersectRecurse(const OcTree<S
         computeBV(box, box_tf, aabb1);
         computeBV(s, tf2, aabb2);
         aabb1.overlap(aabb2, overlap_part);
-        cresult->addCostSource(CostSource<S>(overlap_part, tree1->getOccupancyThres() * s.cost_density), crequest->num_max_cost_sources);
+        cresult->addCostSource(CostSource<S>(overlap_part, tree1->getOccupancyThres() * s.getCostDensity()), crequest->num_max_cost_sources);
       }
     }
 

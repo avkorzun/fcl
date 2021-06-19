@@ -118,6 +118,69 @@ bool CollisionGeometry<S>::isUncertain() const
 
 //==============================================================================
 template <typename S>
+const Vector3<S> &CollisionGeometry<S>::getLocalAABBCenter() const
+{
+  return aabb_center;
+}
+
+//==============================================================================
+template <typename S>
+S CollisionGeometry<S>::getAABBRadius() const
+{
+  return aabb_radius;
+}
+
+//==============================================================================
+template <typename S>
+const AABB<S> &CollisionGeometry<S>::getLocalAABB() const
+{
+  return aabb_local;
+}
+
+//==============================================================================
+template <typename S>
+S CollisionGeometry<S>::getCostDensity() const
+{
+  return cost_density;
+}
+
+//==============================================================================
+template <typename S>
+S CollisionGeometry<S>::getThresholdOccupied() const
+{
+  return threshold_occupied;
+}
+
+//==============================================================================
+template <typename S>
+S CollisionGeometry<S>::getThresholdFree() const
+{
+  return threshold_free;
+}
+
+//==============================================================================
+template <typename S>
+void CollisionGeometry<S>::setCostDensity(S value)
+{
+  cost_density = value;
+}
+
+//==============================================================================
+template <typename S>
+void CollisionGeometry<S>::setThresholdOccupied(S value)
+{
+  threshold_occupied = value;
+}
+
+//==============================================================================
+template <typename S>
+void CollisionGeometry<S>::setThresholdFree(S value)
+{
+  threshold_free = value;
+}
+
+//==============================================================================
+template <typename S>
 Vector3<S> CollisionGeometry<S>::computeCOM() const
 {
   return Vector3<S>::Zero();

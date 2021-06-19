@@ -57,6 +57,7 @@ Plane<S>::Plane(const Vector3<S>& n, S d)
   : ShapeBase<S>(), n(n), d(d)
 {
   unitNormalTest();
+  computeLocalAABB();
 }
 
 //==============================================================================
@@ -65,13 +66,28 @@ Plane<S>::Plane(S a, S b, S c, S d)
   : ShapeBase<S>(), n(a, b, c), d(d)
 {
   unitNormalTest();
+  computeLocalAABB();
 }
 
 //==============================================================================
 template <typename S>
 Plane<S>::Plane() : ShapeBase<S>(), n(1, 0, 0), d(0)
 {
-  // Do nothing
+  computeLocalAABB();
+}
+
+//==============================================================================
+template <typename S>
+const Vector3<S> &Plane<S>::getNormal() const
+{
+  return n;
+}
+
+//==============================================================================
+template <typename S>
+S Plane<S>::getOffset() const
+{
+  return d;
 }
 
 //==============================================================================
@@ -158,8 +174,8 @@ Plane<S> transform(const Plane<S>& a, const Transform3<S>& tf)
   /// where n' = R * n
   ///   and d' = d + n' * T
 
-  Vector3<S> n = tf.linear() * a.n;
-  S d = a.d + n.dot(tf.translation());
+  Vector3<S> n = tf.linear() * a.getNormal();
+  S d = a.getOffset() + n.dot(tf.translation());
 
   return Plane<S>(n, d);
 }

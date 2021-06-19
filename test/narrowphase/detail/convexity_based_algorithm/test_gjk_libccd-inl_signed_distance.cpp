@@ -158,27 +158,27 @@ void TestNonCollidingSphereGJKSignedDistance() {
   for (int i = 0; i < static_cast<int>(spheres.size()); ++i) {
     for (int j = i + 1; j < static_cast<int>(spheres.size()); ++j) {
       if ((spheres[i].center - spheres[j].center).norm() >
-          spheres[i].radius + spheres[j].radius) {
+          spheres[i].getRadius() + spheres[j].getRadius()) {
         // Not in collision.
         for (const S solver_tolerance : {S(1e-4), S(1e-5), S(1e-6)}) {
           const S min_distance_expected =
-              ComputeSphereSphereDistance(spheres[i].radius, spheres[j].radius,
+              ComputeSphereSphereDistance(spheres[i].getRadius(), spheres[j].getRadius(),
                                           spheres[i].center, spheres[j].center);
           // When the change of distance is below solver_tolerances[k], it does
           // not mean that the error in separating distance is below
           // solver_tolerances[k]. Empirically we find the error is less than 10
           // * solver_tolerances[k], but there is no proof.
           TestSphereToSphereGJKSignedDistance<S>(
-              spheres[i].radius, spheres[j].radius, spheres[i].center,
+              spheres[i].getRadius(), spheres[j].getRadius(), spheres[i].center,
               spheres[j].center, solver_tolerance, 10 * solver_tolerance,
               min_distance_expected);
         }
       } else {
         GTEST_FAIL() << "The two spheres collide."
                      << "\nSpheres[" << i << "] with radius "
-                     << spheres[i].radius << ", centered at "
+                     << spheres[i].getRadius() << ", centered at "
                      << spheres[i].center.transpose() << "\nSpheres[" << j
-                     << "] with radius " << spheres[j].radius
+                     << "] with radius " << spheres[j].getRadius()
                      << ", centered at " << spheres[j].center.transpose()
                      << "\n";
       }
@@ -196,25 +196,25 @@ void TestCollidingSphereGJKSignedDistance() {
   for (int i = 0; i < static_cast<int>(spheres.size()); ++i) {
     for (int j = i + 1; j < static_cast<int>(spheres.size()); ++j) {
       if ((spheres[i].center - spheres[j].center).norm() <
-          spheres[i].radius + spheres[j].radius) {
+          spheres[i].getRadius() + spheres[j].getRadius()) {
         // colliding
         const S min_distance_expected =
-            ComputeSphereSphereDistance(spheres[i].radius, spheres[j].radius,
+            ComputeSphereSphereDistance(spheres[i].getRadius(), spheres[j].getRadius(),
                                         spheres[i].center, spheres[j].center);
         for (const S solver_tolerance : {S(1E-4), S(1E-5), S(1E-6)}) {
           // For colliding spheres, the solver_tolerance is the bound on the
           // error relative to the true answer.
           TestSphereToSphereGJKSignedDistance<S>(
-              spheres[i].radius, spheres[j].radius, spheres[i].center,
+              spheres[i].getRadius(), spheres[j].getRadius(), spheres[i].center,
               spheres[j].center, solver_tolerance, solver_tolerance,
               min_distance_expected);
         }
       } else {
         GTEST_FAIL() << "The two spheres failed to collide."
                      << "\nSpheres[" << i << "] with radius "
-                     << spheres[i].radius << ", centered at "
+                     << spheres[i].getRadius() << ", centered at "
                      << spheres[i].center.transpose() << "\nSpheres[" << j
-                     << "] with radius " << spheres[j].radius
+                     << "] with radius " << spheres[j].getRadius()
                      << ", centered at " << spheres[j].center.transpose()
                      << "\n";
       }

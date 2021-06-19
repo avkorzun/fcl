@@ -55,8 +55,8 @@ public:
 
   Sphere(S radius);
 
-  /// @brief Radius of the sphere
-  S radius;
+  /// @brief Radius of the sphere  
+  S getRadius() const;
 
   /// @brief Compute AABB<S>
   void computeLocalAABB() override;
@@ -74,9 +74,14 @@ public:
 
   friend
   std::ostream& operator<<(std::ostream& out, const Sphere& sphere) {
-    out << "Sphere(" << sphere.radius << ")";
+    out << "Sphere(" << sphere.getRadius() << ")";
     return out;
   }
+
+private:
+
+  /// @brief Radius of the sphere
+  S radius;
 };
 
 using Spheref = Sphere<float>;

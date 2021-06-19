@@ -57,10 +57,10 @@ public:
   Capsule(S radius, S lz);
 
   /// @brief Radius of capsule 
-  S radius;
+  S getRadius() const;
 
   /// @brief Length along z axis 
-  S lz;
+  S getLength() const;
 
   /// @brief Compute AABB<S>
   void computeLocalAABB() override;
@@ -80,9 +80,15 @@ public:
 
   friend
   std::ostream& operator<<(std::ostream& out, const Capsule& capsule) {
-    out << "Capsule(r: " << capsule.radius << ", lz: " << capsule.lz << ")";
+    out << "Capsule(r: " << capsule.getRadius() << ", lz: " << capsule.getLength() << ")";
     return out;
   }
+private:
+  /// @brief Radius of capsule 
+  S radius;
+
+  /// @brief Length along z axis 
+  S lz;
 };
 
 using Capsulef = Capsule<float>;

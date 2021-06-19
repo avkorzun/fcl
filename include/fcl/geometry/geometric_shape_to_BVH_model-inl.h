@@ -49,7 +49,7 @@ template<typename BV>
 int addTriangles(BVHModel<BV>& model, const std::vector<Vector3<typename BV::S>>& points, const std::vector<Triangle>& tri_indices, FinalizeModel finalize_model)
 {
   int retval = BVH_OK;
-  if(model.build_state == BVH_BUILD_STATE_EMPTY){
+  if(model.getBuildState() == BVH_BUILD_STATE_EMPTY){
     retval = model.beginModel();
   }
 
@@ -70,9 +70,9 @@ int generateBVHModel(BVHModel<BV>& model, const Box<typename BV::S>& shape, cons
 {
   using S = typename BV::S;
 
-  S a = shape.side[0];
-  S b = shape.side[1];
-  S c = shape.side[2];
+  S a = shape.getSide()[0];
+  S b = shape.getSide()[1];
+  S c = shape.getSide()[2];
   std::vector<Vector3<S>> points(8);
   std::vector<Triangle> tri_indices(12);
   points[0] << 0.5 * a, -0.5 * b, 0.5 * c;
@@ -115,7 +115,7 @@ int generateBVHModel(BVHModel<BV>& model, const Sphere<typename BV::S>& shape, c
   std::vector<Vector3<S>> points;
   std::vector<Triangle> tri_indices;
 
-  S r = shape.radius;
+  S r = shape.getRadius();
   S phi, phid;
   const S pi = constants<S>::pi();
   phid = pi * 2 / seg;
@@ -176,7 +176,7 @@ int generateBVHModel(BVHModel<BV>& model, const Sphere<typename BV::S>& shape, c
 {
   using S = typename BV::S;
 
-  S r = shape.radius;
+  S r = shape.getRadius();
   S n_low_bound = sqrtf(n_faces_for_unit_sphere / 2.0) * r * r;
   unsigned int ring = ceil(n_low_bound);
   unsigned int seg = ceil(n_low_bound);
@@ -193,9 +193,9 @@ int generateBVHModel(BVHModel<BV>& model, const Ellipsoid<typename BV::S>& shape
   std::vector<Vector3<S>> points;
   std::vector<Triangle> tri_indices;
 
-  const S& a = shape.radii[0];
-  const S& b = shape.radii[1];
-  const S& c = shape.radii[2];
+  const S& a = shape.getRadii()[0];
+  const S& b = shape.getRadii()[1];
+  const S& c = shape.getRadii()[2];
 
   S phi, phid;
   const S pi = constants<S>::pi();
@@ -259,9 +259,9 @@ int generateBVHModel(BVHModel<BV>& model, const Ellipsoid<typename BV::S>& shape
 
   const S p = 1.6075;
 
-  const S& ap = std::pow(shape.radii[0], p);
-  const S& bp = std::pow(shape.radii[1], p);
-  const S& cp = std::pow(shape.radii[2], p);
+  const S& ap = std::pow(shape.getRadii()[0], p);
+  const S& bp = std::pow(shape.getRadii()[1], p);
+  const S& cp = std::pow(shape.getRadii()[2], p);
 
   const S ratio = std::pow((ap * bp + bp * cp + cp * ap) / 3.0, 1.0 / p);
   const S n_low_bound = std::sqrt(n_faces_for_unit_ellipsoid / 2.0) * ratio;
@@ -281,8 +281,8 @@ int generateBVHModel(BVHModel<BV>& model, const Cylinder<typename BV::S>& shape,
   std::vector<Vector3<S>> points;
   std::vector<Triangle> tri_indices;
 
-  S r = shape.radius;
-  S h = shape.lz;
+  S r = shape.getRadius();
+  S h = shape.getLength();
   S phi, phid;
   const S pi = constants<S>::pi();
   phid = pi * 2 / circle_split_tot;
@@ -343,8 +343,8 @@ int generateBVHModel(BVHModel<BV>& model, const Cylinder<typename BV::S>& shape,
 {
   using S = typename BV::S;
 
-  S r = shape.radius;
-  S h = shape.lz;
+  S r = shape.getRadius();
+  S h = shape.getLength();
 
   const S pi = constants<S>::pi();
   unsigned int circle_split_tot = circle_split_tot_for_unit_cylinder * r;
@@ -365,8 +365,8 @@ int generateBVHModel(BVHModel<BV>& model, const Cone<typename BV::S>& shape, con
   std::vector<Vector3<S>> points;
   std::vector<Triangle> tri_indices;
 
-  S r = shape.radius;
-  S h = shape.lz;
+  S r = shape.getRadius();
+  S h = shape.getLength();
 
   S phi, phid;
   const S pi = constants<S>::pi();
@@ -429,8 +429,8 @@ int generateBVHModel(BVHModel<BV>& model, const Cone<typename BV::S>& shape, con
   using S = typename BV::S;
 
 
-  S r = shape.radius;
-  S h = shape.lz;
+  S r = shape.getRadius();
+  S h = shape.getLength();
 
   const S pi = constants<S>::pi();
   unsigned int circle_split_tot = circle_split_tot_for_unit_cone * r;
